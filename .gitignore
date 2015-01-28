@@ -4,6 +4,7 @@
 
 # Directories
 .idea/
+.media/campotec/
 
 # Logs and databases
 *.log
