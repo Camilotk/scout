@@ -1,0 +1,166 @@
+{% extends 'core/core.html' %}
+{% load i18n bootstrap3 bootstrap_admin_template_tags %}
+{% block bootstrap3_title %}Campotec Login{% endblock %}
+
+{% block bootstrap3_extra_head %}
+    <link rel="stylesheet" type="text/css" href="/static/campotec/css/home.css" />
+{% endblock %}
+
+{% block bootstrap3_content %}
+<header class="login">
+<div class="container-fluid">
+    <div class="row">
+    <!-- <div class="col-sm-3 col-md-2 sidebar"> -->
+        <div id="content-main">
+            <div class="login-container">
+                <form action="" method="post" id="login-form" class="form form-horizontal" role="form">
+                    {% csrf_token %}
+                    {% comment %}
+                    <a href="/admin/">
+                      <img alt="Administração do Django" src="/static/bootstrap_admin/img/logo-140x60.png" class="logo-admin">
+                    </a>
+                    {% endcomment %}
+                    {% if user.is_authenticated %}
+
+                        <fieldset>
+                            <legend>
+                            <a href="{% url 'campotec-inscription' %}">Campotec - Inscrição</a>
+                            </legend>
+                            <div class="row form-row">
+                                <div class="col-sm-6 username">
+                                    <div class="input-group " style="color:#FFF;">
+                                        <h2 style="color:#FFF;">{% bootstrap_icon "user" %} {{ user.first_name }} {{ user.last_name }}</h2>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 password">
+                                    <div class="input-group "   >
+                                        <a href="{% url 'campotec-logout' %}">
+                                            <h2 style="color:#FFF;">{% bootstrap_icon "off" %} Sair</h2>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                    {% else %}
+                        <fieldset>
+                            <legend>
+                            <a href="{% url 'campotec-inscription' %}">Campotec - Inscrição</a>
+                            </legend>
+                            <div class="row form-row">
+                                <div class="col-sm-6 username">
+                                    <div class="input-group ">
+                                        <span class="input-group-addon">
+                                            {% bootstrap_icon "user" %}
+                                        </span>
+                                         {{ form.username|add_class:'form-control'|placeholder:form.username.label }}
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 password">
+                                    <div class="input-group "   >
+                                        <span class="input-group-addon toggle-password">
+                                            <span class="glyphicon glyphicon-eye-open"></span>
+                                        </span>
+                                        {{ form.password|add_class:'form-control'|placeholder:form.password.label }}
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-primary">Acessar</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if form.errors or form.non_field_errors %}
+                                <br>
+                                {% if form.errors and not form.non_field_errors %}
+                                    {% if form.errors and not form.non_field_errors %}
+                                        <div role="alert" class="alert alert-danger errornote">
+                                        <p>
+                                          <strong>
+                                            {% blocktrans count form.errors.items|length as counter %}Por favor corrija o erro:{% plural %}Por favor corrija os erros:{% endblocktrans %}
+                                          </strong>
+                                        </p>
+                                        {% if form.errors %}
+                                            {% for field in form %}
+                                              {% for error in field.errors %}
+                                                <p class="border-decoration">
+                                                  <strong><span class="glyphicon glyphicon-asterisk"></span> {{ field.label }}: </strong>{{ error|escape }}
+                                                </p>
+                                              {% endfor %}
+                                            {% endfor %}
+                                        {% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                                {% bootstrap_form_errors form layout='inline' %}
+                            {% endif %}
+
+                            {% comment %}
+                            {% if form.errors or form.non_field_errors %}
+                                <br>
+                                <div role="alert" class="alert alert-danger errornote">
+                                  {% if form.errors and not form.non_field_errors %}
+                                    <p>
+                                      <strong>
+                                        {% blocktrans count form.errors.items|length as counter %}Por favor corrija o erro:{% plural %}Por favor corrija os erros:{% endblocktrans %}
+                                      </strong>
+                                    </p>
+                                  {% endif %}
+
+                                  {% if form.non_field_errors %}
+                                    {% for error in form.non_field_errors %}
+                                      <p>
+                                        {{ error }}
+                                      </p>
+                                    {% endfor %}
+                                  {% endif %}
+
+                                  {% if form.errors %}
+                                    {% for field in form %}
+                                      {% for error in field.errors %}
+                                        <p class="border-decoration">
+                                          <strong><span class="glyphicon glyphicon-asterisk"></span> {{ field.label }}: </strong>{{ error|escape }}
+                                        </p>
+                                      {% endfor %}
+                                    {% endfor %}
+                                  {% endif %}
+                                </div>
+                            {% endif %}
+                            {% endcomment %}
+                        </fieldset>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</header>
+<section class="content">
+</section>
+{% endblock %}
+
+{% block bootstrap3_extra_script %}
+    <script type="text/javascript">
+    Login = {
+        init: function(){
+            document.getElementById('id_username').focus();
+            (function ($) {
+            $(document).ready(function(){
+              $('.toggle-password').on('click', function() {
+                $span = $(this).find('span');
+                if ($span.hasClass('glyphicon-eye-open')) {
+                  $span.removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
+                  $('#id_password').prop('type', 'text');
+                } else {
+                  $span.removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+                  $('#id_password').prop('type', 'password');
+                }
+              });
+            });
+            })(jQuery);
+
+        }
+    };
+        Login.init();
+    </script>
+{% endblock %}

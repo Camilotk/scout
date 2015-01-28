@@ -1,0 +1,261 @@
+{% extends 'core/core.html' %}
+{% load i18n bootstrap3 bootstrap_admin_template_tags %}
+
+{% block bootstrap3_title %}Inscrição no Campotec 2015{% endblock %}
+{% block bootstrap3_extra_head %}
+    <meta name="author" content="Equipe Regional de Imagem e Comunicação">
+    <meta name="description" content="Campotec, Acampamento Técnico de Especialidades, Acampamento Técnico, Especialidades, Lobinho, Lobinha, Lobinhos, Lobinhas, Escoteiro, Escoteira, Escoteiros, Escoteiras, Sênior, Seniores, Guia, Guias">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://www.escoteirosrs.org.br/2015/campotec/">
+    <meta property="og:title" content="Campotec - Acampamento Técnico de Especialidades - Escoteiros do Brasil - Rio Grande do Sul">
+    <meta property="og:description" content="Campotec - Acampamento Técnico de Especialidades">
+    <meta property="og:image" content="http://www.escoteirosrs.org.br/2015/campotec/facebook.jpg">
+
+    <link href="http://fonts.googleapis.com/css?family=Raleway:100,200,400,600,800" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" media="all" href="/static/campotec/css/home.css">
+{% endblock %}
+
+{% block bootstrap3_content %}
+
+{% block menu %}
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand visible-xs" href="{% url 'campotec-homepage' %}">Campotec</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            {% block menu-itens %}
+                <li><a class="navbar-brand hidden-xs" href="{% url 'campotec-homepage' %}">Campotec</a></li>
+                <li><a href="#home" title="Início" class="navegacao-link">Início</a></li>
+                <li><a href="#about" title="Informações Gerais" class="navegacao-link">Informações Gerais</a></li>
+                <li><a href="#programacao" title="Programação" class="navegacao-link">Programação</a></li>
+                <li><a href="#location" title="Local" class="navegacao-link">Local</a></li>
+                <li><a href="#inscricoes" title="Inscrições" class="navegacao-link">Inscrições</a></li>
+            {% endblock %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+	{% comment %} MENU ORIGINAL
+	<nav class="navegacao">
+		<ul class="navegacao-items">
+          {% block menu-itens %}
+			<li class="navegacao-item"><a href="#home" title="Início" class="navegacao-link">Início</a></li>
+			<li class="navegacao-item"><a href="#about" title="Informações Gerais" class="navegacao-link">Informações Gerais</a></li>
+			<li class="navegacao-item"><a href="#speakers" title="Especialidades" class="navegacao-link">Especialidades</a></li>
+            <li class="navegacao-item"><a href="#programacao" title="Programação" class="navegacao-link">Programação</a></li>
+			<li class="navegacao-item"><a href="#location" title="Local" class="navegacao-link">Local</a></li>
+			<li class="navegacao-item"><a href="#inscricoes" title="Inscrições" class="navegacao-link">Inscrições</a></li>
+          {% endblock %}
+		</ul>
+	</nav>
+	{% endcomment %}
+{% endblock %}
+
+{% block header %}
+    <header id="home" class="header">
+        <div class="wrapper">
+            <h1 class="logo"><a class="logo-link" href="#" title="Campotec" itemprop="name">Campotec</a></h1>
+            <p class="evento-head">24 e 25 de maio de 2014 • Parque Saint-Hilaire</p>
+
+
+          {% block login-information %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'campotec-inscription' %}" id="btn-inscription" class="call-action-link">Inscreva-se</a>
+            {% else %}
+                <a href="#home" id="btn-inscription" class="call-action-link">Inscreva-se</a>
+
+                <div id="login_container" class="login-container" style="display:none;">
+                <form action="{% url 'campotec-login' %}" method="post" id="login-form" class="form form-horizontal" role="form">
+                    {% csrf_token %}
+                    <fieldset>
+                        <legend>
+                        <h2>Login</h2>
+                        </legend>
+                        <div class="row form-row">
+                            <div class="col-sm-6 username">
+                                <div class="input-group ">
+                                    <span class="input-group-addon">
+                                        {% bootstrap_icon "user" %}
+                                    </span>
+                                     {{ form.username|add_class:'form-control'|placeholder:form.username.label }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 password">
+                                <div class="input-group "   >
+                                    <span class="input-group-addon toggle-password">
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                    </span>
+                                    {{ form.password|add_class:'form-control'|placeholder:form.password.label }}
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary">Acessar</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                </div>
+            {% endif %}
+          {% endblock %}
+            {% comment %}
+            <p class="evento-slogan">Inscrições encerradas!</p>
+            <p style="font-weight:bold; color:#FFF;">Confira a lista dos inscritos por base.</p>
+            <div style="width:100%; text-align:center;"><a href="relação-ramo-escoteiro.pdf" class="call-action-link" target="_blank">Ramo Escoteiro</a></div>
+            {% endcomment %}
+            <br>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content-sections %}
+    <section class="section section-about" id="about">
+        <div class="wrapper">
+
+            <h2 class="section-title">Informações Gerais</h2>
+            <div class="about-text" itemprop="description">
+            <p>O Campotec - Acampamento Técnico de Especialidades - é uma atividade que visa desenvolver habilidades nos jovens lobinhos(as), escoteiros(as), seniors e guias, para uma futura obtenção de especialidades.</p>
+            <p>Todos os participantes (jovens, escotistas e pessoal de apoio) acamparão. Não haverá espaço para acantonamento.</p>
+            <p>A alimentação é de responsabilidade do Grupo Escoteiro e para isso, serão oferecidos quiosques para utilização de um ou mais Grupos Escoteiros.</p>
+            <p>Após o encerramento das inscrições todos os participantes receberão informações em seu endereço eletrônico sobre as atividades oferecidas no evento.</p>
+            <p>Serão observadas todas as regras de segurança, bem como todas as resoluções previstas para o bom andamento da atividade, sendo então proibido o consumo de bebidas alcoólicas, perturbação de ambiente e evitar o fumo na frente dos jovens, principalmente, durante as atividades.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-speakers" id="speakers">
+        <div class="wrapper">
+
+          {% for branch in object_list %}
+            <h2 class="section-title title-white">{{ branch.name }}</h2>
+
+            {% if branch.get_specialties_actives_order_by_name %}
+                <ul class="speakers-list">
+
+                {% regroup branch.get_specialties_actives_order_by_name by date as date_list %}
+
+                {% for date in date_list %}
+                    <p class="eventos-data">{{ date.list.0.date|date:"d \d\e F \d\e Y - l"}}</p>
+
+                    {% for specialty in date.list %}
+                        <li class="eventos-item" itemprop="performer" itemscope="">
+                            <img class="eventos-photo" src="{{ MEDIA_URL }}{{ specialty.image }}" alt="Aeromodelismo" itemprop="image" />
+                            <div class="eventos-info">
+                                <h3 class="eventos-name">{{ specialty.name }} - {{ specialty.get_turn_display }}</h3>
+                                <p class="eventos-bio">{{ specialty.description }}</p>
+
+                                <p class="eventos-inscriptions"><strong>{% bootstrap_icon 'th' %} Vagas: {{ specialty.num_places }} &nbsp;&nbsp;&nbsp;&nbsp; {% bootstrap_icon 'tags' %} &nbsp;Inscritos: {{ specialty.inscription.all|length }}</strong></p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% endfor %}
+                </ul>
+            {% else %} {% comment %}Nenhuma especialidade disponivel{% endcomment %}
+                <ul class="speakers-list">
+                    <li class="eventos-item" itemprop="performer" itemscope=""><div class="eventos-info"><h3 class="eventos-name">{% trans "Nenhum especialidade disponível" %}.</h3></div></li>
+                </ul>
+            {% endif %}
+            <br/>
+            <br/>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="section section-programacao" id="programacao">
+        <div class="wrapper">
+            <h2 class="section-title">Programação</h2>
+
+            {% if programation_list %}
+                <ul class="programacao">
+
+                {% regroup programation_list by date_time.date as date_list %}
+                {# agrupa somente pela data do campo date_time #}
+
+                {% for date in date_list %}
+                    <p><strong>{{ date.list.0.date_time|date:"d \d\e F \d\e Y"}}</strong></p>
+
+                    {% for programation in date.list %}
+                        <li id="programacao-credenciamento" class="programacao-item programacao-item-other">
+                            <div class="programacao-intro">
+                                <div class="programacao-intro-board"><span class="programacao-time">{{ programation.date_time|time:'H:i' }}</span><img src="{{ MEDIA_URL }}{{ programation.image }}" class="programacao-image" /></div>
+                            </div><div class="programacao-slot"><div class="programacao-activity">{{ programation.name }}</div>
+                            <p>{{ programation.description }}</p></div>
+                        </li>
+                    {% endfor %}
+
+                {% endfor %}
+                </ul>
+            {% else %}
+                <ul class="speakers-list">
+                    <li class="eventos-item" itemprop="performer" itemscope=""><div class="eventos-info"><h3 class="eventos-name programacao-vazia">{% trans "Nenhuma programação disponível" %}.</h3></div></li>
+                </ul>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="section section-location" id="location">
+        <div class="wrapper">
+            <h2 class="section-title">Local</h2>
+            <div class="address" itemprop="address" itemtype="http://schema.org/PostalAddress">Campo Escola Escoteiro - João Ribeiro do Santos | Parque Saint-Hilaire<br /><span itemprop="streetAddress">Avenida Senador Salgado Filho, 2785</span> • <span itemprop="addressLocality">Viamão</span> • <span itemprop="addressRegion">Centro • RS</span></div>
+        </div>
+        <div class="address-map" data-address="Avenida Senador Salgado Filho, 2785 - Viamão"></div>
+    </section>
+
+    <section class="section section-inscricoes" id="inscricoes">
+        <div class="wrapper">
+            <h2 class="section-title">Inscrições</h2>
+            <div class="about-text" itemprop="description">
+            <p>A inscrição de todos participantes deve ocorrer através do <a href="http://sigue.escoteiros.org.br/siguejovem" target="_blank">Meu Sigue</a>, nas opções (Jovem, Adulto ou Equipe de Serviço). </p>
+            <p>Os jovens e adultos deverão encaminhar suas fichas de inscrição do SIGUE devidamente autorizados. O limite para inscrição é 24/04.</p>
+            <p>O valor de inscrição dos jovens é de R$ 25,00.</p>
+            <p>O jovem após se inscrever, irá escolher as especialidades  oferecidas, através de formulário online cujo endereço seja enviado por e-mail. Cada jovem participará de oficinas de especialidade, conforme o que o seu ramo oferecer.</p>
+            <p>O período de inscrição para a Equipe de Serviço estará disponível no no Meu Sigue entre 24/03 e 24/04, com valor de R$ 15,00 (cobre certificado, distintivo do evento). Alimentação não inclusa!</p>
+            <p>Os escotistas acompanhantes receberão capacitação para trabalhar com especialidades e fichas de atividades, bem como a avaliação de níveis conquistados pelos jovens.</p>
+            <p>Os membros das equipes de apoio dos Grupos Escoteiros participantes ingressarão no evento pagando a taxa de uso do parque que é R$ 15,00 (Taxa de uso + lembrança do evento), devendo ser paga no campo escola.</p>
+            <p>Os Grupos Escoteiros participantes devem identificar seus colaboradores através de um e-mail para secretaria@escoteirosrs.org.br com o titulo de: Informação apoio Campotec 2014 + Numeral e nome do GE, e no corpo de email a relação das pessoas com Nome, RG e Celular até o dia 15 de maio.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-sponsors" id="sponsors">
+        <div class="wrapper">
+            <h2 class="section-title" style="color:#FFF !important;">Realização</h2>
+            <ul class="partners-list">
+                <li class="partner-item" itemtype="http://schema.org/Organization"><img src="/static/campotec/img/escoteiros-do-brasil.png" alt="Assistência Regional do Ramo Pioneiro" class="partner-logo" itemprop="image" /></li>
+            </ul>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block footer %}
+    <div class="footer"><div class="wrapper"><div class="credits"><a href="http://www.escoteirosrs.org.br/index.php?option=pessoa&id=22&Itemid=269" target="_blank">Equipe Regional</a> de Imagem e Comunicação</div></div></div>
+{% endblock %}
+
+{% endblock %}
+
+{% block bootstrap3_extra_script %}
+    <script src="/static/core/js/jquery.easing.min.js"></script>
+    <script src="/static/campotec/js/home.js"></script>
+    <script type="text/javascript">
+        Campotec.init();
+        Campotec.war();
+    </script>
+    {% block extra_script %}
+        <script type="text/javascript">
+        loadScripts('maps.google.com/maps/api/js?sensor=false&callback=mapsAsyncInit');
+        </script>
+    {% endblock %}
+{% endblock %}

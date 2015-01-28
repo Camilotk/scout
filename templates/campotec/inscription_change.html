@@ -1,0 +1,94 @@
+{% extends 'campotec/homepage.html' %}
+{% load i18n bootstrap3 bootstrap_admin_template_tags %}
+
+{% block menu-itens %}
+    <li><a class="navbar-brand hidden-xs" href="{% url 'campotec-homepage' %}">Campotec</a></li>
+    <li><a href="#home" title="Início" class="navegacao-link">Início</a></li>
+    <li><a href="#specialty" title="Especialidades" class="navegacao-link">Especialidades</a></li>
+
+{% endblock %}
+
+{% block login-information %}
+    <div style="width:100%; text-align:center;">
+    {% if user.is_authenticated %}
+        <h2 class="title-white">{% bootstrap_icon 'user' %} Olá {{ user.first_name }}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{% url 'campotec-logout' %}" class="title-white"> {% bootstrap_icon 'off' %} Sair</a>
+        </h2>
+    {% else %}
+        <a href="{% url 'campotec-login' %}" id="btn-inscription" class="call-action-link">Inscreva-se</a>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block content-sections %}
+     <section class="section section-about" id="specialty">
+        <div class="wrapper">
+            <h2>Escolha as especialiades que deseja participar:</h2>
+        </div>
+     </section>
+
+     <section class="section section-speakers" id="speakers">
+        <div class="wrapper">
+
+            <form name="form_inscription" action="{% url 'campotec-inscription' %}" method="POST">
+                {% csrf_token %}
+
+                <h2 class="section-title title-white">Ramo Escoteiro</h2>
+
+                    <ul class="speakers-list">
+
+                    {% regroup formset by instance.date as date_list %}
+
+                    {% for date in date_list %}
+
+                        <p class="eventos-data">{{ date.list.0.instance.date|date:"d \d\e F \d\e Y"}}</p>
+                        {% for form in date.list %}
+
+                            {% with form.instance as specialty %}
+                                <li class="eventos-item" itemprop="performer" itemscope="">
+                                    <img class="eventos-photo" src="{{ MEDIA_URL }}{{ specialty.image }}" alt="Aeromodelismo" itemprop="image" />
+                                    <div class="eventos-info">
+                                        <h3 class="eventos-name">{{ specialty.name }} - {{ specialty.get_turn_display }}</h3>
+                                        <p class="eventos-bio">{{ specialty.description }}</p>
+
+                                        <p class="eventos-inscriptions"><strong>{% bootstrap_icon 'th' %} Vagas: {{ specialty.num_places }} &nbsp;&nbsp;&nbsp;&nbsp;
+                                            {% bootstrap_icon 'tags' %} &nbsp;Inscritos: {{ specialty.inscription.all|length }} &nbsp;&nbsp;
+                                            <label class="btn btn-primary btn-inscription">
+{#                                                <input class="check-inscription" type="checkbox" value="{{ specialty.pk }}" name="check_inscription" {% if specialty.is_inscribed %} checked {% endif %}>#}
+                                                {{ form.check_inscription }}
+                                                Participar!
+                                            </label>
+                                        </strong>
+                                        </p>
+                                    </div>
+                                </li>
+                            {% endwith %}
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+
+                <br/>
+                <br/>
+
+            </form>
+
+
+        <button type="submit" class="btn-lg btn-success">Salvar --{{ erro1 }}</button>
+            <br>
+            <br>
+
+            <p class="title-white">
+                manage:{{ formset.management_form }}
+            <br>
+                {% for form in formset %}
+                    {{ form.check_inscription.label }} {{ form.check_inscription }}<br>
+                    {{ form.name }}
+                    <br>_____________________________________________________________<br>
+                {% endfor %}
+            </p>
+
+        </div>
+    </section>
+
+{% endblock %}
