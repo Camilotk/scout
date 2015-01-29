@@ -19,6 +19,7 @@ Apps instalados manualmente:
     Documentation: http://django-bootstrap3.readthedocs.org/en/latest/installation.html
     Suporta: Python 2.6, 2.7, 3.2 ou 3.3 e Django >= 1.4
     Dependências instaladas com pip install ...:
+    - Pillow
     - Sphinx
     - sphinx_rtd_theme
 
