@@ -132,4 +132,4 @@ BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 # 3 - Escoteiro - inscrição em especialidades do ramo escoteiras
 # 4 - Sênior - Inscrição em especialidades do ramo sênior
 
-import settings_server
+from settings_server import *
