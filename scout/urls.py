@@ -35,3 +35,4 @@ if settings.DEBUG:
         (r'^media/(.*)$', 'django.views.static.serve',
          {'document_root': os.path.join(settings.PROJECT_PATH, 'media')}),
     )
+

@@ -131,3 +131,5 @@ BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 # 2 - Lobinho - inscrição em especialidades do ramo lobinho
 # 3 - Escoteiro - inscrição em especialidades do ramo escoteiras
 # 4 - Sênior - Inscrição em especialidades do ramo sênior
+
+import settings_server
