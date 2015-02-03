@@ -20,7 +20,7 @@ PROJECT_PATH = BASE_DIR
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#k2b=qc#a)yy9^)4j1u&(+pq7s&mrp^me=#7n+c#pk!ayr@=6t'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
