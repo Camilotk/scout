@@ -42,7 +42,7 @@
                         {% for specialty in date.list %}
 
                             <li class="eventos-item" itemprop="performer" itemscope="">
-                                <img class="eventos-photo" src="{{ MEDIA_URL }}{{ specialty.image }}" alt="Aeromodelismo" itemprop="image" />
+                                <img class="eventos-photo {% if not specialty.image %}image-gray{% endif %}" src="{{ specialty.get_image }}" alt="Aeromodelismo" itemprop="image" />
                                 <div class="eventos-info">
                                     <h3 class="eventos-name">{{ specialty.name }} - {{ specialty.get_turn_display }}</h3>
                                     <p class="eventos-bio">{{ specialty.description }}</p>
@@ -69,6 +69,8 @@
                         <div class="col-md-10">
                         {% if error %}
                             {% bootstrap_alert error 'danger' %}
+                        {% elif success %}
+                            {% bootstrap_alert success 'success' %}
                         {% endif %}
                         </div>
                     </div>
@@ -90,7 +92,7 @@
 
 {% block extra_script %}
     <script type="text/javascript">
-        {% if error %}
+        {% if error or success%}
             Campotec.setPageScroll('#block_error');
         {% endif %}
     </script>

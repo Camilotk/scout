@@ -54,40 +54,63 @@ class CampotecSpecialtiesInscriptionView(ListView):
     def post(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
         specialties_pk_list = request.POST.getlist('check_inscription')
-        context_error = {'error': ''}
+        context = {
+            'error': '',
+            'success': '',
+        }
 
         #Remove todas as inscricoes:
         Specialty.remove_all_inscriptions_user(request.user)
 
         if specialties_pk_list:
             specialty_list = Specialty.objects.filter(pk__in=specialties_pk_list)
-            if len(specialty_list) == 4:
+            num_specialty = len(specialty_list)
+            # lista de especialidades validas para salvar no final das validações
+            list_for_inscription = []
+            # contador para saber em quantos turnos o usuario se inscreveu, precisa ser em 4 para passar.
+            # A inscrição em um turno soma +1, se o turno for do tipo DIA_TODO (TURN_ALL_DAY), então soma +2
+            valid_turno = 0
+
+            if num_specialty >= 2:
                 for specialty in specialty_list:
                     if specialty.branch.group in request.user.groups.all():
                         if len(specialty.inscription.all()) < specialty.num_places:
                             #Valida se tem mais de uma especialidade no mesmo turno/dia
-                            if not Specialty.objects.exclude(pk=specialty.pk).filter(date=specialty.date, turn__in=(specialty.turn, Specialty.TURN_ALL_DAY,)):
-                                specialty.inscription.add(request.user)
+                            if not [item for item in list_for_inscription if (item.date == specialty.date and (item.turn == specialty.turn or item.turn == Specialty.TURN_ALL_DAY))]:
+                                list_for_inscription.append(specialty)
+                                # Validacao do turno
+                                if specialty.turn == Specialty.TURN_ALL_DAY:
+                                    valid_turno += 2
+                                else:
+                                    valid_turno += 1
                             else:
                                 # Especialidades conflitantes em turno/dia
-                                context_error['error'] = _(u"Especialidades conflitantes em Turno/Dias.")
+                                context['error'] = _(u"Especialidades conflitantes em Turno/Dias.")
                                 Specialty.remove_all_inscriptions_user(request.user)
                                 break
                         else:
                             # sem vagas
-                            context_error['error'] = _(u"Especialidades selecionadas não possuem mais vagas. Selecione outras.")
+                            context['error'] = _(u"Especialidades selecionadas não possuem mais vagas. Selecione outras.")
                             Specialty.remove_all_inscriptions_user(request.user)
                             break
 
                     else:
                         # nao pode se inscrever nesta especialidade
-                        context_error['error'] = _(u"Especialidades selecionadas não são do seu Ramo. Selecione outras.")
+                        context['error'] = _(u"Especialidades selecionadas não são do seu Ramo. Selecione outras.")
                         Specialty.remove_all_inscriptions_user(request.user)
                         break
+                # end for
+                # se não ocorreu erros inscreve o usuario nas especialidades list_for_inscription
+                if valid_turno == 4 and not context['error']:
+                    for specialty in list_for_inscription:
+                        specialty.inscription.add(request.user)
+                    context['success'] = _(u"Parabéns! Você foi inscrito com sucesso.")
+                else:
+                    context['error'] = _(u"Inscreva-se em epecialiades que contemplem os 4 turnos.")
+
             else:
-                context_error['error'] = _(u"Selecione pelo menos 4 Especialidades.")
-        context = self.get_context_data()
-        context.update(context_error)
+                context['error'] = _(u"Selecione pelo menos 4 Especialidades.")
+        context.update(self.get_context_data())
         return self.render_to_response(context)
 
     def get_queryset(self):

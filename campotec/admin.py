@@ -72,7 +72,7 @@ class SpecialtyAdmin(admin.ModelAdmin):
         """
         Exibe miniatura da imagem na listagem
         """
-        return '<img src="%s%s" style="width:50px;">' % (settings.MEDIA_URL, obj.image)
+        return '<img src="%s" style="width:50px;">' % (obj.get_image())
     image_thumb.allow_tags = True
 
     def num_inscriptions(self, obj):

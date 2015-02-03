@@ -69,12 +69,17 @@ class Specialty(CoreModel):
 
     is_inscribed = False
 
-
     class Meta:
         ordering = ["-name", "-branch"]
         db_table = "campotec_specialty"
         verbose_name = _(u"Especialidade")
         verbose_name_plural = _(u"Especialidades")
+
+    @staticmethod
+    def remove_all_inscriptions_user(user):
+        specialty_list = Specialty.objects.filter(inscription=user)
+        for specialty in specialty_list:
+            specialty.inscription.remove(user)
 
     def __unicode__(self):
         return self.name
@@ -86,11 +91,11 @@ class Specialty(CoreModel):
         if user in self.inscription.all():
             self.is_inscribed = True
 
-    @staticmethod
-    def remove_all_inscriptions_user(user):
-        specialty_list = Specialty.objects.filter(inscription=user)
-        for specialty in specialty_list:
-            specialty.inscription.remove(user)
+    def get_image(self):
+        if self.image:
+            return "%s%s" % (settings.MEDIA_URL, self.image.name)
+        else:
+            return "%s/campotec/img/especialidade_padrao.jpg" % settings.STATIC_URL
 
 
 class Programation(CoreModel):
