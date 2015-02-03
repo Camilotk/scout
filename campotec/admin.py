@@ -21,7 +21,7 @@ activate.short_description = _(u"Exibir / Ativar")
 
 class BranchAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'active', 'group_link')
-    search_fields = ('name', 'description', 'active')
+    search_fields = ('name', 'description')
     ordering = ('active', '-updated_at', 'name', 'description')
     list_filter = (
         ('active', admin.ChoicesFieldListFilter),
@@ -40,7 +40,7 @@ class BranchAdmin(admin.ModelAdmin):
 class SpecialtyAdmin(admin.ModelAdmin):
     list_display = ('name', 'description_short', 'date', 'turn', 'num_places', 'num_inscriptions' ,'level_1', 'level_2', 'level_3', 'branch_link', 'active', 'image_thumb')
     #list_display_links = ('name',)
-    search_fields = ('name', 'description', 'branch')
+    search_fields = ('name', 'description')
     ordering = ('active', 'name', 'description')
     list_filter = (
         ('active', admin.ChoicesFieldListFilter),
