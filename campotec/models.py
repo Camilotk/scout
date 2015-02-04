@@ -120,6 +120,16 @@ class Programation(CoreModel):
         return "%s - %s" % (self.name, self.date_time)
 
 
+# class ImportInscriptions(CoreModel):
+#
+#     IMPORT_INSCRIPTION_FILE_PATH = os.path.join('campotec', 'import_inscription')
+#
+#     name = models.CharField(verbose_name=_(u"Nome"), max_length=100, blank=True, null=True)
+#     file = models.FileField(verbose_name=_(u"Arquivo .XLS"), upload_to=IMPORT_INSCRIPTION_FILE_PATH, null=False, blank=False, help_text=_(u"Importe aqui o arquivo .xls com a lista de inscritos."))
+#     branch = models.ForeignKey(verbose_name=_(u"Ramo"), to=Branch, null=False, help_text=_(u"Ramo ao qual pertencem os registros do arquivo .xls."))
+
+
+
 @receiver(pre_delete, sender=Specialty)
 @receiver(pre_delete, sender=Programation)
 def delete_image(sender, instance, **kwargs):
@@ -147,5 +157,4 @@ def delete_image_on_update(sender, instance, **kwargs):
         if not instance.image.name or (obj.image.file.name != instance.image.file.name):
             # Deleta a imagem
             obj.image.delete(save=False)
-
     except: pass

@@ -22,6 +22,7 @@ Apps instalados manualmente:
     - Pillow
     - Sphinx
     - sphinx_rtd_theme
+    - django-debug-toolbar
 
     Dependências instaladas manualmente:
     - Bootstrap v3.3.2

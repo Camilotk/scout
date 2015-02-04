@@ -6,18 +6,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import Group
 from django.conf import settings
 from models import Branch, Specialty, Programation
-from core.models import ACTIVE, INACTIVE
-
-
-def inactivate(self, request, queryset):
-    queryset.update(active=INACTIVE)
-inactivate.short_description = _(u"Não Exibir / Inativar")
-
-
-def activate(self, request, queryset):
-    queryset.update(active=ACTIVE)
-activate.short_description = _(u"Exibir / Ativar")
-
+from core.admin import activate, inactivate
 
 class BranchAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'active', 'group_link')
@@ -26,7 +15,7 @@ class BranchAdmin(admin.ModelAdmin):
     list_filter = (
         ('active', admin.ChoicesFieldListFilter),
     )
-    actions = [inactivate, activate,]
+    actions = [inactivate, activate, ]
 
     def group_link(self, obj):
         """
@@ -90,7 +79,7 @@ class ProgramationAdmin(admin.ModelAdmin):
     list_filter = (
         ('active', admin.ChoicesFieldListFilter),
     )
-    actions = [inactivate, activate,]
+    actions = [inactivate, activate, ]
 
     def description_short(self, obj):
         """
@@ -108,6 +97,17 @@ class ProgramationAdmin(admin.ModelAdmin):
         return '<img src="%s%s" style="width:50px;">' % (settings.MEDIA_URL, obj.image)
     image_thumb.allow_tags = True
 
+
 admin.site.register(Branch, BranchAdmin)
 admin.site.register(Specialty, SpecialtyAdmin)
 admin.site.register(Programation, ProgramationAdmin)
+
+
+
+# Para criar uma ação no Cadastro de usuarios:
+# def import_users_campotec(self, request, queryset):
+#     pass
+# import_users_campotec.short_description = _(u"Importar Usuários Campotec")
+#
+# admin.ModelAdmin.import_users_campotec = import_users_campotec
+# admin.ModelAdmin.actions = ['import_users_campotec', ]
