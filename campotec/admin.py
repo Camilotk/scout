@@ -1,11 +1,13 @@
 # -*- coding:utf-8 -*-
+from django.http import HttpResponse
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import Group
 from django.conf import settings
-from models import Branch, Specialty, Programation
+from campotec.forms import ImportInscriptionsForm
+from models import Branch, Specialty, Programation, ImportInscriptions
 from core.admin import activate, inactivate
 
 class BranchAdmin(admin.ModelAdmin):
@@ -15,7 +17,6 @@ class BranchAdmin(admin.ModelAdmin):
     list_filter = (
         ('active', admin.ChoicesFieldListFilter),
     )
-    actions = [inactivate, activate, ]
 
     def group_link(self, obj):
         """
@@ -24,6 +25,20 @@ class BranchAdmin(admin.ModelAdmin):
         group = Group.objects.get(branch__pk=obj.pk)
         return '<a href="%s">%s</a>' % (reverse('admin:auth_group_change', args=(group.pk,)), group.name)
     group_link.allow_tags = True
+
+    def export_users_for_branchs(self, request, queryset):
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename=export_iscritos.xls'
+        work_book = Branch.export_xls_users_by_specialty(request, queryset)
+        work_book.save(response)
+        return response
+
+
+
+    export_users_for_branchs.short_description = _(u"Exportar Usuários por Ramo - em excel (.xls)")
+
+    actions = [inactivate, activate, export_users_for_branchs, ]
+
 
 
 class SpecialtyAdmin(admin.ModelAdmin):
@@ -98,9 +113,25 @@ class ProgramationAdmin(admin.ModelAdmin):
     image_thumb.allow_tags = True
 
 
+class ImportInscriptionsAdmin(admin.ModelAdmin):
+    list_display = ['name', 'updated_at', 'file_link']
+    search_fields = ('name', 'file')
+    ordering = ('-updated_at',)
+    form = ImportInscriptionsForm
+
+    def file_link(self, obj):
+        """
+        Cria link para a listagem do arquivo
+        """
+        return '<a href="%s%s" title="%s">%s</a>' % (settings.MEDIA_URL, obj.file, unicode(_(u"Download do arquivo")), obj.file)
+    file_link.allow_tags = True
+
+
+
 admin.site.register(Branch, BranchAdmin)
 admin.site.register(Specialty, SpecialtyAdmin)
 admin.site.register(Programation, ProgramationAdmin)
+admin.site.register(ImportInscriptions, ImportInscriptionsAdmin)
 
 
 

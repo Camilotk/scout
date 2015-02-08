@@ -120,6 +120,9 @@ MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 # trailing slash.
 MEDIA_URL = '/media/'
 
+# User model
+#AUTH_USER_MODEL = 'core.models.CoreUser'
+
 # App bootstrap_admin
 # For Sidebar Menu (List of apps and models) (RECOMMENDED)
 from django.conf import global_settings

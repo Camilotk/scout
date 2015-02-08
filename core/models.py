@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User
+from django.conf import settings
 
 ACTIVE = 'Y'
 INACTIVE = 'N'
@@ -40,6 +42,39 @@ UF = (
 )
 
 
+def get_uf_dict():
+    """
+    Retorna para UF_DICT um dicionario com os estados, ex:
+    {
+        'RS': "Rio Grande do Sul",
+        ...
+    }
+    """
+    dic = {}
+    for i in UF:
+        dic[i[0]] = i[1].__unicode__()
+    return dic
+
+UF_DICT = get_uf_dict()
+
+
+def get_valid_uf(uf_short_name):
+    """
+    Retorna a sigla do estado se o mesmo estiver correto e existir:
+    """
+    if UF_DICT.get(uf_short_name):
+        return uf_short_name
+    else:
+        return ''
+
+
+
+GROUP_ADMIN = u"Admin"
+GROUP_LOBINHO = u"Lobinho"
+GROUP_ESCOTEIRO = u"Escoteiro"
+GROUP_SENIOR = u"Sênior"
+
+
 class CoreModel(models.Model):
     """
     Model Padrao
@@ -49,3 +84,6 @@ class CoreModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+

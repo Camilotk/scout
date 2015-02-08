@@ -22,6 +22,8 @@ Apps instalados manualmente:
     - Pillow
     - Sphinx
     - sphinx_rtd_theme
+    - xlrd
+    - xlwt
     - django-debug-toolbar
 
     Dependências instaladas manualmente:

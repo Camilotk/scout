@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 from django.utils.translation import ugettext_lazy as _
-from django.contrib import admin
 from core.models import ACTIVE, INACTIVE
 
 

@@ -19,7 +19,6 @@ BRANCHS = [
     {'id': 3, 'name': u"Ramo Sênior", 'description': '', 'active': 'Y', 'group': GROUPS[3]},
 ]
 
-
 # Cria usuarios para inscrição nas especialidades
 class InitialCampotec(object):
     """
@@ -58,7 +57,7 @@ class InitialCampotec(object):
         """
         Cadastra os Ramos
         """
-        print("CADASTRAR RAMOS:")
+        #print("CADASTRAR RAMOS:")
         for branch in BRANCHS:
             branch_new = Branch()
             branch_new.id = branch['id']
@@ -68,7 +67,7 @@ class InitialCampotec(object):
             if branch.get('group'):
                 branch_new.group = Group.objects.get(pk = branch['group']['id'])
             branch_new.save()
-            print("...Ramo: %d - %s Salvo." % (branch_new.id, branch_new.name))
+            #print("...Ramo: %d - %s Salvo." % (branch_new.id, branch_new.name))
 
 
 
