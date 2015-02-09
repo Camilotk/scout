@@ -8,7 +8,7 @@ from scout_group.models import ScoutGroup, UserScoutGroup
 
 class ScoutGroupAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'active',)
-    search_fields = ('__unicode__',)
+    search_fields = ('name', 'number', 'uf',)
     ordering = ('active', 'name', 'number', 'uf', '-updated_at',)
     list_filter = (
         ('active', admin.ChoicesFieldListFilter),
@@ -18,7 +18,7 @@ class ScoutGroupAdmin(admin.ModelAdmin):
 
 class UserScoutGroupAdmin(admin.ModelAdmin):
     list_display = ('user', 'scout_group',)
-    search_fields = ('user', 'scout_group',)
+    search_fields = ('user__username', 'scout_group__name', 'scout_group__number', 'scout_group__uf',)
     ordering = ('user', 'scout_group',)
 
 

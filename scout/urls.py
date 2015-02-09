@@ -30,9 +30,17 @@ urlpatterns = patterns('',
 
 )
 
-if settings.DEBUG:
-    urlpatterns += patterns('',
-        (r'^media/(.*)$', 'django.views.static.serve',
-         {'document_root': os.path.join(settings.PROJECT_PATH, 'media')}),
-    )
+# if settings.DEBUG:
+#     urlpatterns += patterns('',
+#         (r'^media/(.*)$', 'django.views.static.serve',
+#          {'document_root': os.path.join(settings.PROJECT_PATH, 'media')}),
+#     )
 
+
+from django.views.defaults import server_error
+
+handler404 = 'core.views.error404'
+
+handler400 = 'core.views.error500'
+handler403 = 'core.views.error500'
+handler500 = 'core.views.error500'
