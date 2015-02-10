@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 from django.http import HttpResponse
+from django.utils.html import strip_tags
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
@@ -59,10 +60,11 @@ class SpecialtyAdmin(admin.ModelAdmin):
         """
         Corta o texto da Descrição para nao ficar exibir muito grande na listagem
         """
-        if len(obj.description) > 50:
-            return "%s..." % obj.description[0:50]
+        text = strip_tags(obj.description)
+        if len(text) > 50:
+            return "%s..." % text[0:50]
         else:
-            return "%s" % obj.description
+            return "%s" % text
     description_short.allow_tags = True
 
     def branch_link(self, obj):
@@ -100,10 +102,11 @@ class ProgramationAdmin(admin.ModelAdmin):
         """
         Corta o texto da Descrição para nao ficar exibir muito grande na listagem
         """
-        if (len(obj.description) > 80):
-            return "%s..." % obj.description[0:80]
+        text = strip_tags(obj.description)
+        if (len(text) > 80):
+            return "%s..." % text[0:80]
         else:
-            return "%s" % obj.description
+            return "%s" % text
 
     def image_thumb(self, obj):
         """

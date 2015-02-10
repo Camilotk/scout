@@ -110,7 +110,7 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     #os.path.join(BASE_DIR, "static"),
     ('', os.path.join(PROJECT_PATH, 'sitestatic')),
-    ('ckeditor', os.path.join(PROJECT_PATH, 'static', 'ckeditor')),
+    ('', os.path.join(PROJECT_PATH, 'static', 'ckeditor')),
 )
 
 SERVER_STATIC_FILES = True
