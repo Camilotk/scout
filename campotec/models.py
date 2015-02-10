@@ -44,6 +44,13 @@ class Branch(CoreModel):
             specialty.check_inscribed(user)
         return specialty_list
 
+    def remove_all_users(self):
+        """
+        Remove todos os usuarios associados ao grupo deste Ramo
+        """
+        for user in self.group.user_set.all():
+            user.delete()
+
 
     @staticmethod
     def export_xls_users_by_specialty(request, queryset, file_export=os.path.join(settings.BASE_DIR, 'campotec', 'tests', 'teste_exportacao.xls')):
@@ -162,9 +169,7 @@ class Specialty(CoreModel):
     )
 
     name = models.CharField(verbose_name=_(u"Nome"), max_length=100, null=False)
-    #description = models.TextField(verbose_name=_(u"Descrição"), max_length=500, blank=True)
     description = RichTextField(verbose_name=_(u"Descrição"), max_length=1000, blank=True, config_name='description')
-
     date = models.DateField(verbose_name=_(u"Data"))
     turn = models.CharField(verbose_name=_(u"Turno"), max_length=1, choices=CHOICE_TURN, default=TURN_ALL_DAY, blank=False)
     num_places = models.IntegerField(verbose_name=_(u"Nº de Vagas"), default=0, blank=False, null=False)
@@ -216,7 +221,7 @@ class Programation(CoreModel):
     name = models.CharField(verbose_name=_(u"Nome"), max_length=100, null=False)
     date_time = models.DateTimeField(verbose_name=_(u"Data e Hora"))
     active = models.CharField(verbose_name=_(u"Exibir"), max_length=1, choices=CHOICE_ACTIVE, default='S', blank=False)
-    description = models.TextField(verbose_name=_(u"Descrição"), max_length=500, blank=True)
+    description = RichTextField(verbose_name=_(u"Descrição"), max_length=1000, blank=True, config_name='description')
     image = models.ImageField(verbose_name=_(u"Imagem"), upload_to=IMAGE_PATH, null=True, blank=True, help_text=_(u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
 
     class Meta:

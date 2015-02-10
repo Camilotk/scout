@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
+from django.contrib.admin import helpers
 from django.http import HttpResponse
+from django.template.response import TemplateResponse
 from django.utils.html import strip_tags
 
 from django.utils.translation import ugettext_lazy as _
@@ -10,6 +12,7 @@ from django.conf import settings
 from campotec.forms import ImportInscriptionsForm
 from models import Branch, Specialty, Programation, ImportInscriptions
 from core.admin import activate, inactivate
+
 
 class BranchAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'active', 'group_link')
@@ -33,13 +36,27 @@ class BranchAdmin(admin.ModelAdmin):
         work_book = Branch.export_xls_users_by_specialty(request, queryset)
         work_book.save(response)
         return response
-
-
-
     export_users_for_branchs.short_description = _(u"Exportar Usuários por Ramo - em excel (.xls)")
 
-    actions = [inactivate, activate, export_users_for_branchs, ]
+    def remove_users_for_branch(self, request, queryset):
+        if request.POST.get('post'):
+            # Executa a remocao
+            for branch in queryset.all():
+                branch.remove_all_users()
+        else:
+            context = {
+                'title': _("Are you sure?"),
+                'queryset': queryset,
+                'action_checkbox_name': helpers.ACTION_CHECKBOX_NAME,
+                'opts': self.model._meta,
+                'name_plural': self.model._meta.verbose_name_plural,
+                'action_name': "remove_users_for_branch",
+            }
+            return TemplateResponse(request, 'core/admin/confirmation_delete.html', context, current_app=self.admin_site.name)
 
+    remove_users_for_branch.short_description = _(u"Remover usuários por ramo.")
+
+    actions = [inactivate, activate, export_users_for_branchs, remove_users_for_branch, ]
 
 
 class SpecialtyAdmin(admin.ModelAdmin):

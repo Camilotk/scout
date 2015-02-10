@@ -117,6 +117,7 @@ SERVER_STATIC_FILES = True
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
+    os.path.join(BASE_DIR, 'bootstrap_admin', 'templates'),
 )
 
 STATICFILES_FINDERS = (
