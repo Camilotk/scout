@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import pre_delete, pre_save, post_save
 from django.dispatch.dispatcher import receiver
 from django.conf import settings
+from ckeditor.fields import RichTextField
 from core.models import CoreModel, CHOICE_ACTIVE, ACTIVE, get_valid_uf
 
 from scout_group.models import ScoutGroup, UserScoutGroup
@@ -161,7 +162,9 @@ class Specialty(CoreModel):
     )
 
     name = models.CharField(verbose_name=_(u"Nome"), max_length=100, null=False)
-    description = models.TextField(verbose_name=_(u"Descrição"), max_length=500, blank=True)
+    #description = models.TextField(verbose_name=_(u"Descrição"), max_length=500, blank=True)
+    description = RichTextField(verbose_name=_(u"Descrição"), max_length=1000, blank=True, config_name='description')
+
     date = models.DateField(verbose_name=_(u"Data"))
     turn = models.CharField(verbose_name=_(u"Turno"), max_length=1, choices=CHOICE_TURN, default=TURN_ALL_DAY, blank=False)
     num_places = models.IntegerField(verbose_name=_(u"Nº de Vagas"), default=0, blank=False, null=False)

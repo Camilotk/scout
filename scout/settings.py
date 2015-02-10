@@ -110,9 +110,10 @@ STATICFILES_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     #os.path.join(BASE_DIR, "static"),
     ('', os.path.join(PROJECT_PATH, 'sitestatic')),
+    ('ckeditor', os.path.join(PROJECT_PATH, 'static', 'ckeditor')),
 )
 
-SERVE_STATIC_FILES = True
+SERVER_STATIC_FILES = True
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
@@ -152,7 +153,29 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 
 # CKEditor Configuration
-CKEDITOR_UPLOAD_PATH = os.path.join("media", "uploads")
+CKEDITOR_UPLOAD_PATH = os.path.join("uploads")
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 300,
+    },
+    'description': {
+        'toolbar': 'full',
+        'width': 'auto',
+        'height': 200,
+        'toolbarCanCollapse': True,
+        'filebrowserWindowWidth': 'auto',
+        'filebrowserWindowHeight': 'auto',
+        'toolbar':[
+            ["Source"],
+            ["StrikeThrough","-","Undo","Redo","-","Cut","Copy","Paste","PasteText","PasteFromWord","Find","Replace","-",
+                "Outdent","Indent","NumberedList","BulletedList"],
+            ["-","JustifyLeft","JustifyCenter","JustifyRight","JustifyBlock"],
+            ["Format","Font","FontSize","TextColor","BGColor","-","Bold","Italic","Underline","-","Image","Table","-","Link","Flash","-","Scayt"],
+        ]
+    },
+}
 
 # GRUPOS DE USUARIO
 # 1 - Admin - permissão total

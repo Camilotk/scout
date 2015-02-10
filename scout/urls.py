@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^ckeditor/', include('ckeditor.urls')),
 
     # CAMPOTEC
     url(r'^campotec/$', CampotecHomePageView.as_view(), name="campotec-homepage"),
@@ -32,10 +33,9 @@ urlpatterns = patterns('',
 )
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-if settings.DEBUG:
+if settings.SERVER_STATIC_FILES:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    #urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
 

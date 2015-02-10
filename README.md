@@ -29,5 +29,13 @@ Apps instalados manualmente:
     Dependências instaladas manualmente:
     - Bootstrap v3.3.2
 
+# Deploy:
+
+  - Executar:
+    - python manage.py collectstatic # para mover os arquivos estáticos dos apps e do diretorio /sitestatic para /static
+    - Configurar /static para servir arquivos estáticos no apache.
+
+
+
 Diretório dos pacotes zip: /install/
 
