@@ -17,6 +17,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor.urls')),
+    url(r'^accounts/', include('registration.backends.default.urls')),
 
     # CAMPOTEC
     url(r'^campotec/$', CampotecHomePageView.as_view(), name="campotec-homepage"),

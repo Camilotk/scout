@@ -48,7 +48,7 @@ class InitialCampotec(object):
         user_new.last_name = 'Nome 2'
         user_new.email = '123@email.com'
         user_new.is_active = 1
-        user_new.is_staff = 0
+        user_new.is_staff = 1
         user_new.save()
         group = Group.objects.get(name=u'Escoteiro')
         group.user_set.add(user_new)

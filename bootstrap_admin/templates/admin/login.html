@@ -20,11 +20,12 @@
     <div class="login-container">
       <form action="{{ app_path }}" method="post" id="login-form" class="form form-horizontal" role="form">{% csrf_token %}
         <a href="{% url 'admin:index' %}">
-          <img alt="{{ site_header|default:_('Django administration') }}" src="{% static "bootstrap_admin/img/logo-300x70.png" %}" class="logo-admin">
+          <img alt="{{ site_header|default:_('Administration') }}" src="{% static "bootstrap_admin/img/logo-300x70.png" %}" class="logo-admin">
         </a>
         <fieldset>
           <legend>
-            {{ site_header|default:_('Django administration') }} - {{ title }}
+            {% comment %}{{ site_header|default:_('Administration') }} - {{ title }}{% endcomment %}
+              {{ ''|default:_('Administration') }} - {{ title }}
           </legend>
 
           {% if form.errors or form.non_field_errors %}
@@ -76,6 +77,7 @@
                   <button type="submit" class="btn btn-primary">{% trans 'Log in' %}</button>
                 </span>
               </div><!-- /input-group -->
+              <a href="{% url 'auth_password_reset' %}">{% blocktrans %}Esqueci minha senha{% endblocktrans %}</a>
             </div><!-- /.col-sm-6 -->
           </div>
 

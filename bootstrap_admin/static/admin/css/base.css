@@ -327,3 +327,6 @@ body {
     max-width: 100px;
   }
 }
+.text-white {
+    color: #FFF;
+}

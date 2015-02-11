@@ -66,7 +66,7 @@
               {% block branding %}
                 <a href="{% url 'admin:index' %}" class="django-admin-logo">
                   <!-- Django Administration -->
-                  <img src="{% static "bootstrap_admin/img/logo-300x70.png" %}" style="height: 61px;" alt="{{ site_header|default:_('Django administration') }}" title="{{ site_header|default:_('Django administration') }}">
+                  <img src="{% static "bootstrap_admin/img/logo-300x70.png" %}" style="height: 61px;" alt="{{ site_header|default:_('Administration') }}" title="{{ site_header|default:_('Django administration') }}">
                 </a>
               {% endblock branding %}
               {% block filters %}{% endblock filters %}

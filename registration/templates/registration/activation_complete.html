@@ -1,0 +1,22 @@
+{% extends "core/core.html" %}
+{% load i18n %}
+
+{% block bootstrap3_title %}{% trans "Ativação da Conta" %}{% endblock bootstrap3_title %}
+
+{% block bootstrap3_content %}
+<p>
+    {% trans "Sua conta foi ativada." %}
+    {% if not user.is_authenticated %}
+        {% trans "Acesse o sistema." %}
+    {% endif %}
+</p>
+{% endblock bootstrap3_content %}
+
+
+{% comment %}
+**registration/activation_complete.html**
+
+Used after successful account activation. This template has no context
+variables of its own, and should simply inform the user that their
+account is now active.
+{% endcomment %}

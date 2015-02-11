@@ -33,19 +33,3 @@ class ScoutGroup(CoreModel):
         Retorna somente numeral e sigla do estado
         """
         return "%0.3d - %s" % (self.number, self.uf)
-
-class UserScoutGroup(models.Model):
-    user = models.ForeignKey(to=User, null=False, blank=False, unique=True)
-    scout_group = models.ForeignKey(to=ScoutGroup, null=False, blank=False)
-
-    class Meta:
-        ordering = ['user', 'scout_group']
-        db_table = "scout_group_userscoutgroup"
-        verbose_name = _(u"Usuário por Grupo Escoteiro")
-        verbose_name_plural = _(u"Usuários por Grupo Escoteiro")
-
-    def __unicode__(self):
-        if self.user.first_name:
-            return "%s %s" % (self.user.first_name, self.user.last_name)
-        else:
-            return self.user.username

@@ -3,7 +3,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from core.admin import activate, inactivate
-from scout_group.models import ScoutGroup, UserScoutGroup
+from scout_group.models import ScoutGroup
 
 
 class ScoutGroupAdmin(admin.ModelAdmin):
@@ -16,11 +16,4 @@ class ScoutGroupAdmin(admin.ModelAdmin):
     actions = [inactivate, activate, ]
 
 
-class UserScoutGroupAdmin(admin.ModelAdmin):
-    list_display = ('user', 'scout_group',)
-    search_fields = ('user__username', 'scout_group__name', 'scout_group__number', 'scout_group__uf',)
-    ordering = ('user', 'scout_group',)
-
-
 admin.site.register(ScoutGroup, ScoutGroupAdmin)
-admin.site.register(UserScoutGroup, UserScoutGroupAdmin)

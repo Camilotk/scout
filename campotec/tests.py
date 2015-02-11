@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-from django.contrib.auth.hashers import make_password
 
 from django.test import TestCase, Client
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -8,7 +7,6 @@ from django.contrib.auth.models import User, Group
 from core.models import GROUP_ESCOTEIRO, GROUP_LOBINHO, GROUP_SENIOR, ACTIVE, get_valid_uf
 from campotec.models import Branch, ImportInscriptions, Specialty
 from campotec.forms import ImportInscriptionsForm
-from scout_group.models import ScoutGroup, UserScoutGroup
 from campotec.initial_campotec import InitialCampotec
 from datetime import datetime
 import os
@@ -32,11 +30,12 @@ class CampotecImportInscriptionsTest(TestCase):
 
         self.client = Client()
 
-        self.file_import_inscription = os.path.join(settings.BASE_DIR, 'campotec', 'tests', 'teste_escoteiros.xls')
+        self.file_import_inscription = os.path.join(settings.BASE_DIR, 'campotec', 'tests', 'inscricoesDadosAssociadosESCOTEIROS.xls')
         self.file_export_inscription = os.path.join(settings.BASE_DIR, 'campotec', 'tests', 'teste_exportacao.xls')
 
         self.create_specialties()
         self.import_inscription()
+
 
     # def test_login(self):
     #     response = self.client.login(username="guerra", password="g")
@@ -54,7 +53,7 @@ class CampotecImportInscriptionsTest(TestCase):
         }
         form_data_file = {'file': SimpleUploadedFile(upload_file.name, upload_file.read()),}
 
-        form = ImportInscriptionsForm(data=form_data,files=form_data_file)
+        form = ImportInscriptionsForm(data=form_data, files=form_data_file)
         self.assertTrue(form.is_valid())
         form.save()
         self.assertEqual(ImportInscriptions.objects.count(), 1)
@@ -138,7 +137,12 @@ class CampotecImportInscriptionsTest(TestCase):
         """
         Testa a exportação dos usuários inscritos em especialidades
         """
-        branch = Branch.objects.get(name='Ramo Escoteiro')
-        branch.export_xls_users_by_specialty(self.file_export_inscription)
+        queryset = Branch.objects.filter(name='Ramo Escoteiro')
+
+        request = self.client.request()
+        request.user = User.objects.get(username='123')
+
+        workbook = Branch.export_xls_users_by_specialty(request, queryset)
+        workbook.save(self.file_export_inscription)
 
 

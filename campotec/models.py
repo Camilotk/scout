@@ -8,13 +8,13 @@ import re
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django.utils.translation import ugettext_lazy as _
-from django.db.models.signals import pre_delete, pre_save, post_save
+from django.db.models.signals import pre_delete, pre_save
 from django.dispatch.dispatcher import receiver
 from django.conf import settings
 from ckeditor.fields import RichTextField
 from core.models import CoreModel, CHOICE_ACTIVE, ACTIVE, get_valid_uf
-
-from scout_group.models import ScoutGroup, UserScoutGroup
+from registration.models import RegistrationProfile
+from scout_group.models import ScoutGroup
 
 
 class Branch(CoreModel):
@@ -53,7 +53,7 @@ class Branch(CoreModel):
 
 
     @staticmethod
-    def export_xls_users_by_specialty(request, queryset, file_export=os.path.join(settings.BASE_DIR, 'campotec', 'tests', 'teste_exportacao.xls')):
+    def export_xls_users_by_specialty(request, queryset):
         """
 
         """
@@ -122,12 +122,15 @@ class Branch(CoreModel):
                     col_n += 1
                     plan.write(line_n, col_n, user.get_full_name(), style_default)
                     col_n += 1
-                    scout_group = user.userscoutgroup_set.first().scout_group
-                    plan.write(line_n, col_n, scout_group.get_short_name(), style_default)
+                    scout_group_name = ''
+                    scout_group = user.registrationprofile_set.get().scout_group
+                    if scout_group:
+                        scout_group_name = scout_group.get_short_name()
+                    plan.write(line_n, col_n, scout_group_name , style_default)
 
             # Lista os usuarios nao inscritos em especialidades
             #list_dont_inscription = branch.group.user_set.exclude(specialty__contains=Specialty.objects.all())
-            list_dont_inscription = branch.group.user_set.filter(specialty=None).exclude(userscoutgroup=None)
+            list_dont_inscription = branch.group.user_set.filter(specialty=None).exclude(registrationprofile__scout_group=None)
 
             if list_dont_inscription:
                 line_n += 2
@@ -143,14 +146,11 @@ class Branch(CoreModel):
                     col_n += 1
                     plan.write(line_n, col_n, user.get_full_name(), style_default)
                     col_n += 1
-                    scout_group = user.userscoutgroup_set.first().scout_group
+                    scout_group = user.registrationprofile_set.get().scout_group
                     plan.write(line_n, col_n, scout_group.get_short_name(), style_default)
 
         #work_book.save(file_export)
         return work_book
-
-
-
 
 
 class Specialty(CoreModel):
@@ -259,7 +259,6 @@ class ImportInscriptions(CoreModel):
     def get_file_path(self):
         return os.path.join(settings.MEDIA_ROOT, self.file.name)
 
-
     def remove_all_groups_for_user(self, user):
         """
         Remove todos os grupos de usuario do usuario recebido
@@ -310,30 +309,34 @@ class ImportInscriptions(CoreModel):
             except:
                 raise forms.ValidationError(u"Arquivo de importação com erro na linha %d." % line_number)
 
-
         for item in list_validation:
+
             user_tuple = User.objects.get_or_create(username=item['username'])
             user = user_tuple[0]
-            # Se True
-            if user_tuple[1]:
-                user.first_name = item['first_name']
-                user.last_name = item['last_name']
-                user.password = make_password(item['username'])
-                user.is_active = 1
-                user.is_staff = 0
-                user.save()
+            user.first_name = item['first_name']
+            user.last_name = item['last_name']
+            user.password = make_password(item['username'])
+            user.is_active = 1
+            user.is_staff = 0
+            user.save()
 
             self.remove_all_groups_for_user(user)
             user.groups.add(group)
 
+            # Cria o RegistrationProfile
+            profile = RegistrationProfile.objects.get_or_create_active_user(user)
+
             #scout_group = ScoutGroup.objects.filter(number=scout_group_number)
             scout_group_tuple = ScoutGroup.objects.get_or_create(number=item['group_number'], uf=get_valid_uf(item['uf']))
             scout_group = scout_group_tuple[0]
-            if scout_group_tuple[1]:
-                scout_group.active = ACTIVE
-                scout_group.save()
+            scout_group.active = ACTIVE
+            scout_group.save()
 
-            user_scout_group_tuple = UserScoutGroup.objects.get_or_create(user=user, scout_group=scout_group)
+            profile.scout_group = scout_group
+            profile.save()
+
+
+            #user_scout_group_tuple = UserScoutGroup.objects.get_or_create(user=user, scout_group=scout_group)
             #print "REG: %s | Grupo: %s - %s " % (user.first_name, line_scout_group[0], line_scout_group[1])
 
     def xlread(self, file_read):

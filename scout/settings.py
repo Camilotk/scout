@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'bootstrap3',
     'ckeditor',
+    'registration',
     'core',
     'scout_group',
     'campotec',
@@ -109,15 +110,20 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     #os.path.join(BASE_DIR, "static"),
+    ('', os.path.join(PROJECT_PATH, 'bootstrap_admin', 'static')),
+    ('', os.path.join(PROJECT_PATH, 'ckeditor', 'static')),
     ('', os.path.join(PROJECT_PATH, 'sitestatic')),
-    ('', os.path.join(PROJECT_PATH, 'static', 'ckeditor')),
+
+
 )
 
 SERVER_STATIC_FILES = True
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
+    os.path.join(BASE_DIR, 'registration', 'templates'),
     os.path.join(BASE_DIR, 'bootstrap_admin', 'templates'),
+
 )
 
 STATICFILES_FINDERS = (
@@ -177,6 +183,22 @@ CKEDITOR_CONFIGS = {
         ]
     },
 }
+
+# Registration Configuracoes
+ACCOUNT_ACTIVATION_DAYS = 7 # limite de dias para a ativacao da conta
+REGISTRATION_AUTO_LOGIN = True # SE True, os usuarios sao automaticamente logados ao clicar no link de ativacao da conta enviado por email. Default eh False
+REGISTRATION_OPEN = False
+
+
+# Configuracoes de email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #Envia email real
+EMAIL_HOST = 'smtp.gmail.com' #default='localhost'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #Envia um email no console (terminal)
+#EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend' #nao envia email (não faz nada)
 
 # GRUPOS DE USUARIO
 # 1 - Admin - permissão total
