@@ -1,17 +1,44 @@
 # -*- coding:utf-8 -*-
 from django.contrib.admin import helpers
-from django.http import HttpResponse
+from django.core.checks import messages
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.utils.html import strip_tags
+from django.utils.safestring import mark_safe
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import Group
 from django.conf import settings
-from campotec.forms import ImportInscriptionsForm
-from models import Branch, Specialty, Programation, ImportInscriptions
+from core.models import INACTIVE
+from campotec.forms import ImportInscriptionsForm, HomepageForm
+from models import Homepage, Branch, Specialty, Programation, ImportInscriptions
 from core.admin import activate, inactivate
+
+
+class HomepageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'homepage_title_short', 'homepage_active', 'information_active', 'local_active', 'observation_active')
+    list_display_links = ('id', 'homepage_title_short', 'homepage_active',)
+    actions = ('duplicate_item',)
+
+    form = HomepageForm
+
+    def homepage_title_short(self, obj):
+        """
+        Retorna o titulo sem tags html para a exibição na listagem
+        """
+        return obj.__unicode__()
+    homepage_title_short.allow_tags = True
+
+    def duplicate_item(self, request, queryset):
+        if queryset.count() <> 1:
+            self.message_user(request, _(u"Selecione apenas 1 item para duplicar"), level=messages.ERROR)
+        else:
+            obj = queryset.get()
+            obj_new = obj.duplicate_save()
+            return HttpResponseRedirect(redirect_to=reverse('admin:campotec_homepage_change', args=(obj_new.id,)))
+    duplicate_item.short_description = _(u"Duplicar Item")
 
 
 class BranchAdmin(admin.ModelAdmin):
@@ -147,7 +174,7 @@ class ImportInscriptionsAdmin(admin.ModelAdmin):
     file_link.allow_tags = True
 
 
-
+admin.site.register(Homepage, HomepageAdmin)
 admin.site.register(Branch, BranchAdmin)
 admin.site.register(Specialty, SpecialtyAdmin)
 admin.site.register(Programation, ProgramationAdmin)

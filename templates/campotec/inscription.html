@@ -30,7 +30,7 @@
 
           <form name="form_inscription" action="{% url 'campotec-inscription' %}" method="POST">
               {% csrf_token %}
-              {% for branch in object_list %}
+              {% for branch in branch_list %}
                 <h2 class="section-title title-white">{{ branch.name }} </h2>
                 {% if branch.list_specialties %}
                     <ul class="speakers-list">
@@ -45,7 +45,7 @@
                                 <img class="eventos-photo {% if not specialty.image %}image-gray{% endif %}" src="{{ specialty.get_image }}" alt="Aeromodelismo" itemprop="image" />
                                 <div class="eventos-info">
                                     <h3 class="eventos-name">{{ specialty.name }} - {{ specialty.get_turn_display }}</h3>
-                                    <p class="eventos-bio">{{ specialty.description }}</p>
+                                    <p class="eventos-bio">{{ specialty.description|safe }}</p>
 
                                     <p class="eventos-inscriptions"><strong>{% bootstrap_icon 'th' %} Vagas: {{ specialty.num_places }} &nbsp;&nbsp;&nbsp;&nbsp;
                                         {% bootstrap_icon 'tags' %} &nbsp;Inscritos: {{ specialty.inscription.all|length }} &nbsp;&nbsp;

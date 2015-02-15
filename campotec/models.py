@@ -1,7 +1,11 @@
 # -*- coding:utf-8 -*-
+from copy import deepcopy
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse
 from django.forms import forms
+from django.utils.html import strip_tags
+from django.utils.safestring import mark_safe
 
 import os
 import re
@@ -12,10 +16,87 @@ from django.db.models.signals import pre_delete, pre_save
 from django.dispatch.dispatcher import receiver
 from django.conf import settings
 from ckeditor.fields import RichTextField
-from core.models import CoreModel, CHOICE_ACTIVE, ACTIVE, get_valid_uf
+from core.models import CoreModel, CHOICE_ACTIVE, ACTIVE, INACTIVE, get_valid_uf
 from registration.models import RegistrationProfile
 from scout_group.models import ScoutGroup
 
+
+class Homepage(CoreModel):
+    """
+    Pagina inicial
+    """
+    HOMEPAGE_IMAGE_PATH = os.path.join('campotec', 'homepage')
+
+    homepage_active = models.CharField(verbose_name=_(u"Ativar Página Inicial"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
+    homepage_logo = models.ImageField(verbose_name=_(u"Cabeçalho Logo"), upload_to=HOMEPAGE_IMAGE_PATH, null=True, blank=True, help_text=_(u"Para não distorcer e manter a responsividade, envie uma imagem com resolução média de 300 x 300px."))
+
+    homepage_title = RichTextField(verbose_name=_(u"Cabeçalho Título"), blank=True, config_name='description')
+    homepage_image_background = models.ImageField(verbose_name=_(u"Cabeçalho Imagem de Fundo"), upload_to=HOMEPAGE_IMAGE_PATH, null=True, blank=True, help_text=_(u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
+
+    information_active = models.CharField(verbose_name=_(u"Exibir Bloco Informações"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
+    information_title = RichTextField(verbose_name=_(u"Informações Título"), config_name='title', null=True, blank=True)
+    information_text = RichTextField(verbose_name=_(u"Informações Texto"), config_name='description', null=True, blank=True)
+
+    local_active = models.CharField(verbose_name=_(u"Exibir Bloco Local"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
+    local_maps_name = models.CharField(verbose_name=_(u"Local no Maps"), max_length=500, blank=True, help_text=_(u"Nome do Local no Google Maps."))
+    local_title = RichTextField(verbose_name=_(u"Local Título"), config_name='title', null=True, blank=True)
+    local_text = RichTextField(verbose_name=_(u"Local Texto"), blank=True, config_name='description')
+
+    observation_active = models.CharField(verbose_name=_(u"Exibir Bloco Observações"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
+    observation_title = RichTextField(verbose_name=_(u"Observações Título"), config_name='title', null=True, blank=True)
+    observation_text = RichTextField(verbose_name=_(u"Observações Texto"), blank=True, config_name='description')
+
+    class Meta:
+        ordering = ["homepage_active"]
+        db_table = "campotec_homepage"
+        verbose_name = _(u"Página Inicial")
+        verbose_name_plural = _(u"Páginas Iniciais")
+
+    def __unicode__(self):
+        text = strip_tags(self.homepage_title)
+        if len(text) > 50:
+            text = "%s..." % text[0:50]
+        else:
+            text = "%s" % text
+        return mark_safe(text)
+
+    def get_url_homepage_preview(self):
+        return reverse('campotec-homepage-preview', args=(self.id,))
+
+    def duplicate_save(self):
+        obj_new = deepcopy(self)
+        obj_new.id = None
+        obj_new.homepage_active = INACTIVE
+        obj_new.save()
+        return obj_new
+
+    def has_more_one_active(self):
+        """
+        SE possui mais de um registro com homepage_active, retorna True
+        SE nao False
+        """
+        if Homepage.objects.filter(homepage_active=ACTIVE).exclude(id=self.id).count() > 0:
+            return True
+        else:
+            return False
+
+    def is_information_active(self):
+        if self.information_active == ACTIVE:
+            return True
+        else:
+            return False
+
+    def is_local_active(self):
+        if self.local_active == ACTIVE:
+            return True
+        else:
+            return False
+
+    def is_observation_active(self):
+        if self.observation_active == ACTIVE:
+            return True
+        else:
+            return False
 
 class Branch(CoreModel):
     """
@@ -346,6 +427,8 @@ class ImportInscriptions(CoreModel):
         plan = xls.sheets()[0]
         for i in xrange(1, plan.nrows, 1):
             yield plan.row_values(i)
+
+
 
 
 @receiver(pre_delete, sender=Specialty)

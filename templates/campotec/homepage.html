@@ -45,29 +45,14 @@
         </div>
       </div>
     </nav>
-
-
-	{% comment %} MENU ORIGINAL
-	<nav class="navegacao">
-		<ul class="navegacao-items">
-          {% block menu-itens %}
-			<li class="navegacao-item"><a href="#home" title="Início" class="navegacao-link">Início</a></li>
-			<li class="navegacao-item"><a href="#about" title="Informações Gerais" class="navegacao-link">Informações Gerais</a></li>
-			<li class="navegacao-item"><a href="#speakers" title="Especialidades" class="navegacao-link">Especialidades</a></li>
-            <li class="navegacao-item"><a href="#programacao" title="Programação" class="navegacao-link">Programação</a></li>
-			<li class="navegacao-item"><a href="#location" title="Local" class="navegacao-link">Local</a></li>
-			<li class="navegacao-item"><a href="#inscricoes" title="Inscrições" class="navegacao-link">Inscrições</a></li>
-          {% endblock %}
-		</ul>
-	</nav>
-	{% endcomment %}
 {% endblock %}
 
 {% block header %}
     <header id="home" class="header">
-        <div class="wrapper">
+        <div class="wrapper" style="display: block;">
+
             <h1 class="logo"><a class="logo-link" href="#" title="Campotec" itemprop="name">Campotec</a></h1>
-            <p class="evento-head">24 e 25 de maio de 2014 • Parque Saint-Hilaire</p>
+            <p class="evento-head">{{ homepage.homepage_title|safe }}</p>
 
 
           {% block login-information %}
@@ -121,24 +106,23 @@
 {% endblock %}
 
 {% block content-sections %}
-    <section class="section section-about" id="about">
-        <div class="wrapper">
 
-            <h2 class="section-title">Informações Gerais</h2>
-            <div class="about-text" itemprop="description">
-            <p>O Campotec - Acampamento Técnico de Especialidades - é uma atividade que visa desenvolver habilidades nos jovens lobinhos(as), escoteiros(as), seniors e guias, para uma futura obtenção de especialidades.</p>
-            <p>Todos os participantes (jovens, escotistas e pessoal de apoio) acamparão. Não haverá espaço para acantonamento.</p>
-            <p>A alimentação é de responsabilidade do Grupo Escoteiro e para isso, serão oferecidos quiosques para utilização de um ou mais Grupos Escoteiros.</p>
-            <p>Após o encerramento das inscrições todos os participantes receberão informações em seu endereço eletrônico sobre as atividades oferecidas no evento.</p>
-            <p>Serão observadas todas as regras de segurança, bem como todas as resoluções previstas para o bom andamento da atividade, sendo então proibido o consumo de bebidas alcoólicas, perturbação de ambiente e evitar o fumo na frente dos jovens, principalmente, durante as atividades.</p>
+    {% if homepage.information_active %}
+        <section class="section section-about" id="about">
+            <div class="wrapper">
+                <h2 class="section-title">{{ homepage.information_title|safe }}</h2>
+                <div class="about-text" itemprop="description">
+                    {{ homepage.information_text|safe }}
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    {% endif %}
 
+    {% if branch_list %}
     <section class="section section-speakers" id="speakers">
         <div class="wrapper">
 
-          {% for branch in object_list %}
+          {% for branch in branch_list %}
             <h2 class="section-title title-white">{{ branch.name }}</h2>
 
             {% if branch.get_specialties_actives_order_by_name %}
@@ -171,7 +155,9 @@
             {% endfor %}
         </div>
     </section>
+    {% endif %}
 
+    {% if programation_list %}
     <section class="section section-programacao" id="programacao">
         <div class="wrapper">
             <h2 class="section-title">Programação</h2>
@@ -190,7 +176,7 @@
                             <div class="programacao-intro">
                                 <div class="programacao-intro-board"><span class="programacao-time">{{ programation.date_time|time:'H:i' }}</span><img src="{{ MEDIA_URL }}{{ programation.image }}" class="programacao-image" /></div>
                             </div><div class="programacao-slot"><div class="programacao-activity">{{ programation.name }}</div>
-                            <p>{{ programation.description }}</p></div>
+                            <p>{{ programation.description|safe }}</p></div>
                         </li>
                     {% endfor %}
 
@@ -203,30 +189,31 @@
             {% endif %}
         </div>
     </section>
+    {% endif %}
 
-    <section class="section section-location" id="location">
-        <div class="wrapper">
-            <h2 class="section-title">Local</h2>
-            <div class="address" itemprop="address" itemtype="http://schema.org/PostalAddress">Campo Escola Escoteiro - João Ribeiro do Santos | Parque Saint-Hilaire<br /><span itemprop="streetAddress">Avenida Senador Salgado Filho, 2785</span> • <span itemprop="addressLocality">Viamão</span> • <span itemprop="addressRegion">Centro • RS</span></div>
-        </div>
-        <div class="address-map" data-address="Avenida Senador Salgado Filho, 2785 - Viamão"></div>
-    </section>
-
-    <section class="section section-inscricoes" id="inscricoes">
-        <div class="wrapper">
-            <h2 class="section-title">Inscrições</h2>
-            <div class="about-text" itemprop="description">
-            <p>A inscrição de todos participantes deve ocorrer através do <a href="http://sigue.escoteiros.org.br/siguejovem" target="_blank">Meu Sigue</a>, nas opções (Jovem, Adulto ou Equipe de Serviço). </p>
-            <p>Os jovens e adultos deverão encaminhar suas fichas de inscrição do SIGUE devidamente autorizados. O limite para inscrição é 24/04.</p>
-            <p>O valor de inscrição dos jovens é de R$ 25,00.</p>
-            <p>O jovem após se inscrever, irá escolher as especialidades  oferecidas, através de formulário online cujo endereço seja enviado por e-mail. Cada jovem participará de oficinas de especialidade, conforme o que o seu ramo oferecer.</p>
-            <p>O período de inscrição para a Equipe de Serviço estará disponível no no Meu Sigue entre 24/03 e 24/04, com valor de R$ 15,00 (cobre certificado, distintivo do evento). Alimentação não inclusa!</p>
-            <p>Os escotistas acompanhantes receberão capacitação para trabalhar com especialidades e fichas de atividades, bem como a avaliação de níveis conquistados pelos jovens.</p>
-            <p>Os membros das equipes de apoio dos Grupos Escoteiros participantes ingressarão no evento pagando a taxa de uso do parque que é R$ 15,00 (Taxa de uso + lembrança do evento), devendo ser paga no campo escola.</p>
-            <p>Os Grupos Escoteiros participantes devem identificar seus colaboradores através de um e-mail para secretaria@escoteirosrs.org.br com o titulo de: Informação apoio Campotec 2014 + Numeral e nome do GE, e no corpo de email a relação das pessoas com Nome, RG e Celular até o dia 15 de maio.</p>
+    {% if homepage.is_local_active %}
+        <section class="section section-location" id="location">
+            <div class="wrapper">
+                <h2 class="section-title">{{ homepage.local_title|safe }}</h2>
+                <div class="address" itemprop="address" itemtype="http://schema.org/PostalAddress">
+                    {{ homepage.local_text|safe }}
+                </div>
             </div>
-        </div>
-    </section>
+            {% comment %}<div class="address-map" data-address="Avenida Senador Salgado Filho, 2785 - Viamão"></div>{% endcomment %}
+            <div class="address-map" data-address="{{ homepage.local_maps_name }}"></div>
+        </section>
+    {% endif %}
+
+    {% if homepage.is_observation_active %}
+        <section class="section section-inscricoes" id="inscricoes">
+            <div class="wrapper">
+                <h2 class="section-title">{{ homepage.observation_title|safe }}</h2>
+                <div class="about-text" itemprop="description">
+                {{ homepage.observation_text|safe }}
+                </div>
+            </div>
+        </section>
+    {% endif %}
 
     <section class="section section-sponsors" id="sponsors">
         <div class="wrapper">

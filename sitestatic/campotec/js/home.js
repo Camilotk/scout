@@ -49,7 +49,6 @@ Campotec = {
         }, 500, ''); // 'easeInOutExpo'
     },
 
-
     war: function(){var pressedCtrl = false;var sss=0;$(document).keyup(function (e) {if(e.which == 17) pressedCtrl=false;});$(document).keydown(function (e) {if(e.which == 17) pressedCtrl = true; if(pressedCtrl) {if ((e.which == 39 || e.keyCode == 39)) sss += 39; else if((e.which == 38 || e.keyCode == 38)) sss += 38; else if ((e.which == 65 || e.keyCode == 65)) sss += 65; else if ((e.which == 66 || e.keyCode == 66)){sss += 66;if(sss==208) window.location = "/star_wars/";}}});}
 };
 
@@ -73,27 +72,24 @@ function getCookie(name) {
   var container = document.querySelector('[data-address]')
     , address   = container.getAttribute('data-address')
     , options   = {
-        zoom: 16
-      , scrollwheel: false
-      , mapTypeControl: false
-      , labels: true
-      , zoomControlOptions: {
+        zoom: 16,
+        scrollwheel: true,
+        mapTypeControl: true,
+        labels: true,
+        zoomControlOptions: {
           position: google.maps.ControlPosition.TOP_RIGHT
-        }
-      , mapTypeId: google.maps.MapTypeId.ROADMAP
-    }
-
-  var map    = new google.maps.Map(container, options)
-    , search = new google.maps.Geocoder()
-
+        },
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+    };
+  var map    = new google.maps.Map(container, options),
+      search = new google.maps.Geocoder();
   search.geocode({ address: address }, function (data) {
-    var location = data[0].geometry.location
-
+    var location = data[0].geometry.location;
     new google.maps.Marker({
       map: map
     , position: location
-    })
-    map.setCenter(location)
+    });
+    map.setCenter(location);
   })
 };
 

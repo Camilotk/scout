@@ -1,8 +1,8 @@
 .logo-link {
   font: 0/0 auto; }
 
+/* Aplica filtro preto e branco nas imagens
 /*.eventos-photo, */
-
  .presenter-photo, .programacao-item-other .programacao-image, .programacao-item-speaker .programacao-image, .organizer-photo, .image-gray {
   filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
   /* Firefox 10+, Firefox on Android */
@@ -352,18 +352,24 @@ a {
     .wrapper {
       padding: 0 25px; } }
 
-.navegacao { background: white; z-index: 2; top: 0; width: 100%; position: absolute; left: -9999rem; }
-@media screen and (min-width: 37.5rem) { .navegacao { position: static; position: fixed;left: 0; }}
-.navegacao-items { list-style: none; text-align: center; margin: 0; padding: 0; }
-.navegacao-item { display: inline-block; margin: 0 1rem; }
-.navegacao-link { display: inline-block; font: 600 0.9375rem/3.4375rem 'Raleway', sans-serif; text-transform: uppercase; text-decoration: none; color: #6c6c6c; }
 .navegacao-link.active { box-shadow: inset 0 8px 0 #F39A24; }
 
-.header { padding: 0.9375rem 0; background: url(../img/header.jpg) center center no-repeat; background-size: cover; text-align: center; }
-@media screen and (min-width: 37.5rem) { .header { padding-top: 4.375rem; }}
+.header {
+    padding: 0.9375rem 0;
+    background: url(../img/header.jpg) center center no-repeat;
+    background-size: cover; text-align: center;
+    /*padding-top: 4.375rem;*/
+}
+@media screen and (min-width: 37.5rem) { .header { padding-top: 8rem; } }
 
 .logo { width: 20rem; margin: 1.25rem auto;  }
-.logo-link { display: block; padding-bottom: 53.125%; background: url(../img/logo.png) no-repeat; width:542px; height:150px; }
+.logo-link {
+    display: block;
+    padding-bottom: 53.125%;
+    background: url(../img/logo.png) no-repeat;
+    width: auto;
+    height: auto;
+}
 
 .evento-head {
   margin: 0;
@@ -439,8 +445,6 @@ bottom: -10px;
 background: -webkit-radial-gradient(center top, ellipse farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
 background: radial-gradient(farthest-side at center top, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)); }
 
-
-
   @media screen and (min-width: 37.5rem) {
     .section-title {
       font-size: 2.75rem;
@@ -467,8 +471,6 @@ bottom: -10px;
 background: -webkit-radial-gradient(center top, ellipse farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
 background: radial-gradient(farthest-side at center top, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)); }
 
-
-
   @media screen and (min-width: 37.5rem) {
     .section-subtitle {
       font-size: 2.75rem;
@@ -486,7 +488,6 @@ background: radial-gradient(farthest-side at center top, rgba(0, 0, 0, 0.15), rg
         bottom: -10px;
         background: -webkit-radial-gradient(center top, ellipse farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0));
         background: radial-gradient(farthest-side at center top, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)); } }
-
 
 .section-collaborate {
   background: url("../img/texture-blue.jpg") center center;
@@ -793,11 +794,6 @@ margin: 0; }
       margin-top: 2.5rem;
       height: 29.375rem; } }
 
-
-
-
-
-
 .section-valores { padding-top: 0.625rem; }
 
 .valores-list { list-style: none; margin: 0; padding: 0; }
@@ -811,8 +807,6 @@ margin: 0; }
 .valores-item:nth-child(4n+1) { clear: left; } }
 .valores-photo { width: 50%; border-radius: 25%; display: block; margin: 0 auto; }
 .valores-name { margin-top: 0.625rem; font-weight: 800; }
-
-
 
 .section-organizers { padding-top: 0.625rem; }
 
@@ -905,8 +899,7 @@ margin: 0; }
       padding-bottom: 5rem; } }
 
 
-
-/* CESS SOBREESCRITOS */
+/* CSS SOBREESCRITOS */
 header.login {
     padding-top: 120px;
     background: #f5f5f5;

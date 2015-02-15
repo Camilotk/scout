@@ -4,60 +4,78 @@ from django.shortcuts import render_to_response, redirect
 
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, TemplateView
 from django.conf import settings
 
 from auth import LoginForm, campotec_login_required
-from models import Branch, Programation, Specialty
+from models import Branch, Programation, Specialty, Homepage
 from core.models import ACTIVE
 import json
 
 
-class CampotecHomePageView(ListView):
+class CampotecHomePageView(TemplateView):
     """
     URL: http://g1.globo.com/dynamo/economia/rss2.xml
     """
 
     template_name = "campotec/homepage.html";
     object = Branch
+    queryset = []
 
     def get(self, request, *args, **kwargs):
-
-        self.queryset = Branch.objects.filter(active=ACTIVE).order_by('-updated_at')
         return super(CampotecHomePageView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(CampotecHomePageView, self).get_context_data(**kwargs)
         context.update({
+            'homepage': Homepage.objects.get(homepage_active=ACTIVE),
             'form': LoginForm(),
-            'programation_list': Programation.objects.filter(active=ACTIVE).order_by('date_time')
+            'branch_list': Branch.objects.filter(active=ACTIVE).order_by('-updated_at'),
+            'programation_list': Programation.objects.filter(active=ACTIVE).order_by('date_time'),
         })
         return context
 
 
-class CampotecSpecialtiesInscriptionView(ListView):
+class CampotecHomepagePreview(TemplateView):
+
+    template_name = 'campotec/homepage_preview.html'
+
+    def get(self, request, id=None, *args, **kwargs):
+        self.id_homepage = id
+        return super(CampotecHomepagePreview, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(CampotecHomepagePreview, self).get_context_data(**kwargs)
+        context.update({
+            'form': LoginForm(),
+            'homepage': Homepage.objects.get(id=self.id_homepage),
+            'branch_list': Branch.objects.filter(active=ACTIVE).order_by('-updated_at'),
+            'programation_list': Programation.objects.filter(active=ACTIVE).order_by('date_time'),
+        })
+        return context
+
+
+class CampotecSpecialtiesInscriptionView(TemplateView):
     """
 
     """
     template_name = "campotec/inscription.html";
-    object = Branch
-
 
     @method_decorator(campotec_login_required)
     def dispatch(self, *args, **kwargs):
         return super(CampotecSpecialtiesInscriptionView, self).dispatch(*args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        self.queryset = Branch.objects.filter(active=ACTIVE,group__in=self.request.user.groups.all()).order_by('-updated_at')
         return super(CampotecSpecialtiesInscriptionView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        self.object_list = self.get_queryset()
+
         specialties_pk_list = request.POST.getlist('check_inscription')
-        context = {
+        context = self.get_context_data(**kwargs)
+        context.update({
             'error': '',
             'success': '',
-        }
+        })
 
         #Remove todas as inscricoes:
         Specialty.remove_all_inscriptions_user(request.user)
@@ -113,17 +131,14 @@ class CampotecSpecialtiesInscriptionView(ListView):
         context.update(self.get_context_data())
         return self.render_to_response(context)
 
-    def get_queryset(self):
-        self.queryset = Branch.objects.filter(active=ACTIVE,group__in=self.request.user.groups.all()).order_by('-updated_at')
-        return super(CampotecSpecialtiesInscriptionView, self).get_queryset()
-
     def get_context_data(self, **kwargs):
         context = super(CampotecSpecialtiesInscriptionView, self).get_context_data(**kwargs)
-
-        for branch in context.get('object_list'):
+        branch_list = Branch.objects.filter(active=ACTIVE, group__in=self.request.user.groups.all()).order_by('-updated_at')
+        for branch in branch_list:
             branch.list_specialties = branch.get_specialties_actives_order_by_name_user(self.request.user)
 
         context.update({
+            'branch_list': branch_list,
             'programation_list': Programation.objects.filter(active=ACTIVE).order_by('date_time'),
         })
         return context

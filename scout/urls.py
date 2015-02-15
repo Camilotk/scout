@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 import os
 
 from campotec.auth import login as CampotecLogin, logout as CampotecLogout
-from campotec.views import CampotecHomePageView, CampotecSpecialtiesInscriptionView, CampotecInscriptionViews
+from campotec.views import CampotecHomePageView, CampotecSpecialtiesInscriptionView, CampotecHomepagePreview, CampotecInscriptionViews
 
 
 urlpatterns = patterns('',
@@ -27,7 +27,7 @@ urlpatterns = patterns('',
     url(r'^campotec/logout/$', CampotecLogout, name='campotec-logout'),
     # Inscrição em especialidade
     url(r'^campotec/inscricao/$', CampotecSpecialtiesInscriptionView.as_view(), name="campotec-inscription"),
-    #url(r'^campotec/inscrever/$', CampotecInscriptionViews.as_view(), name="campotec-add-inscription"),
+    url(r'^campotec/preview-homepage/(?P<id>\d+)/$', CampotecHomepagePreview.as_view(), name="campotec-homepage-preview"),
 
     url(r'^star_wars/', TemplateView.as_view(template_name='core/star_wars.html'), name='star_wars'),
 

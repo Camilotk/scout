@@ -168,7 +168,7 @@ CKEDITOR_CONFIGS = {
         'width': 300,
     },
     'description': {
-        'toolbar': 'full',
+        'autoParagraph': False,
         'width': 'auto',
         'height': 200,
         'toolbarCanCollapse': True,
@@ -179,7 +179,22 @@ CKEDITOR_CONFIGS = {
             ["StrikeThrough","-","Undo","Redo","-","Cut","Copy","Paste","PasteText","PasteFromWord","Find","Replace","-",
                 "Outdent","Indent","NumberedList","BulletedList"],
             ["-","JustifyLeft","JustifyCenter","JustifyRight","JustifyBlock"],
-            ["Format","Font","FontSize","TextColor","BGColor","-","Bold","Italic","Underline","-","Image","Table","-","Link","Flash","-","Scayt"],
+            ["Format","Font","FontSize","TextColor","BGColor","-","Bold","Italic","Underline","RemoveFormat", "-","Image","Table","-","Link","Flash","-","Scayt"],
+        ]
+    },
+    'title': {
+        'autoParagraph': False,
+        'toolbar': 'full',
+        'width': 'auto',
+        'height': 80,
+        'toolbarCanCollapse': True,
+        'filebrowserWindowWidth': 'auto',
+        'filebrowserWindowHeight': 'auto',
+        'toolbar':[
+            ["Source"],
+            ["StrikeThrough","-","Undo","Redo","-","Cut","Copy","Paste"],
+            ["-","JustifyLeft","JustifyCenter","JustifyRight","JustifyBlock"],
+            ["Format","Font","FontSize","TextColor","BGColor","-","Bold","Italic","Underline","-","Image","-","Link","-","Scayt"],
         ]
     },
 }
