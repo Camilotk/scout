@@ -48,10 +48,10 @@
 {% endblock %}
 
 {% block header %}
-    <header id="home" class="header">
+    <header id="home" class="header" style="background: url({{ homepage.get_homepage_image_background }}) center center no-repeat;">
         <div class="wrapper" style="display: block;">
 
-            <h1 class="logo"><a class="logo-link" href="#" title="Campotec" itemprop="name">Campotec</a></h1>
+            <h1 class="logo"><a class="logo-link" href="#" title="Campotec" itemprop="name" style="background: url({{ homepage.get_homepage_logo }}) no-repeat;">Campotec</a></h1>
             <p class="evento-head">{{ homepage.homepage_title|safe }}</p>
 
 

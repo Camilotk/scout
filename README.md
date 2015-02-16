@@ -29,6 +29,9 @@ Apps instalados manualmente:
     Dependências instaladas manualmente:
     - Bootstrap v3.3.2
 
+    CKeditor configurações:
+    - http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.autoGrow_onStartup
+
 # Deploy:
 
   - Executar:

@@ -98,6 +98,18 @@ class Homepage(CoreModel):
         else:
             return False
 
+    def get_homepage_logo(self):
+        if self.homepage_logo:
+            return "%s/%s" % (settings.MEDIA_URL, self.homepage_logo)
+        else:
+            return os.path.join(settings.STATIC_URL, 'campotec', 'img', 'logo.png')
+
+    def get_homepage_image_background(self):
+        if self.homepage_image_background:
+            return "%s/%s" % (settings.MEDIA_URL, self.homepage_image_background)
+        else:
+            return os.path.join(settings.STATIC_URL, 'campotec', 'img', 'header.jpg')
+
 class Branch(CoreModel):
     """
     Ramo
