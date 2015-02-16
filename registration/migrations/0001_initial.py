@@ -8,8 +8,8 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('scout_group', '0002_auto_20150211_1451'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('scout_group', '__first__'),
     ]
 
     operations = [
@@ -17,12 +17,13 @@ class Migration(migrations.Migration):
             name='RegistrationProfile',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('activation_key', models.CharField(max_length=40, verbose_name='activation key')),
+                ('activation_key', models.CharField(max_length=40, verbose_name='Chave de Ativa\xe7\xe3o')),
+                ('scout_group', models.ForeignKey(verbose_name='Grupo Escoteiro', blank=True, to='scout_group.ScoutGroup', null=True)),
                 ('user', models.ForeignKey(verbose_name='user', to=settings.AUTH_USER_MODEL, unique=True)),
             ],
             options={
-                'verbose_name': 'Usu\xe1rio',
-                'verbose_name_plural': 'Usu\xe1rios',
+                'verbose_name': 'Perfil',
+                'verbose_name_plural': 'Perfis',
             },
             bases=(models.Model,),
         ),
