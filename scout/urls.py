@@ -31,6 +31,9 @@ urlpatterns = patterns('',
 
     url(r'^star_wars/', TemplateView.as_view(template_name='core/star_wars.html'), name='star_wars'),
 
+    # Institution
+    url(r'^institucional/', include('institution.urls', namespace='institution', app_name='institution')),
+
 )
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns

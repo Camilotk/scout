@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.webdesign',
     'django.contrib.staticfiles',
     'debug_toolbar',
     'bootstrap3',
@@ -110,11 +111,10 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     #os.path.join(BASE_DIR, "static"),
-    ('', os.path.join(PROJECT_PATH, 'bootstrap_admin', 'static')),
-    ('', os.path.join(PROJECT_PATH, 'ckeditor', 'static')),
-    ('', os.path.join(PROJECT_PATH, 'sitestatic')),
-
-
+    ('', os.path.join(BASE_DIR, 'bootstrap_admin', 'static')),
+    ('', os.path.join(BASE_DIR, 'ckeditor', 'static')),
+    ('', os.path.join(BASE_DIR, 'institution', 'static')),
+    ('', os.path.join(BASE_DIR, 'sitestatic')),
 )
 
 SERVER_STATIC_FILES = True
@@ -123,7 +123,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
     os.path.join(BASE_DIR, 'registration', 'templates'),
     os.path.join(BASE_DIR, 'bootstrap_admin', 'templates'),
-
+    os.path.join(BASE_DIR, 'institution', 'templates'),
 )
 
 STATICFILES_FINDERS = (
@@ -147,7 +147,7 @@ MEDIA_URL = '/media/'
 # App bootstrap_admin
 # For Sidebar Menu (List of apps and models) (RECOMMENDED)
 from django.conf import global_settings
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.request",
     "django.core.context_processors.debug",
@@ -156,6 +156,8 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
+    "institution.context_processors.menu_loader",
+    "institution.context_processors.navigation",
 )
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 

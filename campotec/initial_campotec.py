@@ -66,6 +66,7 @@ class InitialCampotec(object):
         """
         Cadastra os novos grupos de usuário
         """
+
         for group in GROUPS:
             group_new = Group()
             group_new.pk = group['id']
