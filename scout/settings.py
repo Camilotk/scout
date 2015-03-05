@@ -223,4 +223,7 @@ EMAIL_USE_TLS = True
 # 3 - Escoteiro - inscrição em especialidades do ramo escoteiras
 # 4 - Sênior - Inscrição em especialidades do ramo sênior
 
-from settings_server import *
+try:
+    from settings_server import *
+except:
+    pass
