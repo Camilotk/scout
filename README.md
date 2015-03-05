@@ -37,8 +37,7 @@ Apps instalados manualmente:
   - Executar:
     - python manage.py collectstatic # para mover os arquivos estáticos dos apps e do diretorio /sitestatic para /static
     - Configurar /static para servir arquivos estáticos no apache.
-
-
+  - OBS: os arquivos setup.py e wsgi.py na raiz do projeto são exclusivos para rodar em ambiente online, em servidor de aplicação.
 
 Diretório dos pacotes zip: /install/
 
