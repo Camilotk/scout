@@ -2,6 +2,8 @@
 import os
 import sys
 
+# teste aplicacao
+
 # sys.path.append('/work/scout')
 #os.environ['PYTHON_EGG_CACHE'] = '/work/cache/.python-egg'
 sys.path.append(os.path.join(os.environ['OPENSHIFT_REPO_DIR'], 'scout'))
