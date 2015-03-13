@@ -27,22 +27,32 @@ class Homepage(CoreModel):
     """
     HOMEPAGE_IMAGE_PATH = os.path.join('campotec', 'homepage')
 
-    homepage_active = models.CharField(verbose_name=_(u"Ativar Página Inicial"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
-    homepage_logo = models.ImageField(verbose_name=_(u"Cabeçalho Logo"), upload_to=HOMEPAGE_IMAGE_PATH, null=True, blank=True, help_text=_(u"Para não distorcer e manter a responsividade, envie uma imagem com resolução média de 300 x 300px."))
+    homepage_active = models.CharField(verbose_name=_(u"Ativar Página Inicial"), max_length=1, choices=CHOICE_ACTIVE,
+                                       default=ACTIVE, blank=False)
+    homepage_logo = models.ImageField(verbose_name=_(u"Cabeçalho Logo"), upload_to=HOMEPAGE_IMAGE_PATH, null=True,
+                                      blank=True, help_text=_(
+            u"Para não distorcer e manter a responsividade, envie uma imagem com resolução média de 300 x 300px."))
 
     homepage_title = RichTextField(verbose_name=_(u"Cabeçalho Título"), blank=True, config_name='description')
-    homepage_image_background = models.ImageField(verbose_name=_(u"Cabeçalho Imagem de Fundo"), upload_to=HOMEPAGE_IMAGE_PATH, null=True, blank=True, help_text=_(u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
+    homepage_image_background = models.ImageField(verbose_name=_(u"Cabeçalho Imagem de Fundo"),
+                                                  upload_to=HOMEPAGE_IMAGE_PATH, null=True, blank=True, help_text=_(
+            u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
 
-    information_active = models.CharField(verbose_name=_(u"Exibir Bloco Informações"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
+    information_active = models.CharField(verbose_name=_(u"Exibir Bloco Informações"), max_length=1,
+                                          choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
     information_title = RichTextField(verbose_name=_(u"Informações Título"), config_name='title', null=True, blank=True)
-    information_text = RichTextField(verbose_name=_(u"Informações Texto"), config_name='description', null=True, blank=True)
+    information_text = RichTextField(verbose_name=_(u"Informações Texto"), config_name='description', null=True,
+                                     blank=True)
 
-    local_active = models.CharField(verbose_name=_(u"Exibir Bloco Local"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
-    local_maps_name = models.CharField(verbose_name=_(u"Local no Maps"), max_length=500, blank=True, help_text=_(u"Nome do Local no Google Maps."))
+    local_active = models.CharField(verbose_name=_(u"Exibir Bloco Local"), max_length=1, choices=CHOICE_ACTIVE,
+                                    default=ACTIVE, blank=False)
+    local_maps_name = models.CharField(verbose_name=_(u"Local no Maps"), max_length=500, blank=True,
+                                       help_text=_(u"Nome do Local no Google Maps."))
     local_title = RichTextField(verbose_name=_(u"Local Título"), config_name='title', null=True, blank=True)
     local_text = RichTextField(verbose_name=_(u"Local Texto"), blank=True, config_name='description')
 
-    observation_active = models.CharField(verbose_name=_(u"Exibir Bloco Observações"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
+    observation_active = models.CharField(verbose_name=_(u"Exibir Bloco Observações"), max_length=1,
+                                          choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
     observation_title = RichTextField(verbose_name=_(u"Observações Título"), config_name='title', null=True, blank=True)
     observation_text = RichTextField(verbose_name=_(u"Observações Texto"), blank=True, config_name='description')
 
@@ -110,6 +120,7 @@ class Homepage(CoreModel):
         else:
             return os.path.join(settings.STATIC_URL, 'campotec', 'img', 'header.jpg')
 
+
 class Branch(CoreModel):
     """
     Ramo
@@ -129,10 +140,10 @@ class Branch(CoreModel):
         return self.name
 
     def get_specialties_actives_order_by_name(self):
-        return self.specialty_set.filter(active=ACTIVE).order_by('date','name')
+        return self.specialty_set.filter(active=ACTIVE).order_by('date', 'name')
 
     def get_specialties_actives_order_by_name_user(self, user):
-        specialty_list = self.specialty_set.filter(active=ACTIVE).order_by('date','name')
+        specialty_list = self.specialty_set.filter(active=ACTIVE).order_by('date', 'name')
         for specialty in specialty_list:
             specialty.check_inscribed(user)
         return specialty_list
@@ -160,9 +171,12 @@ class Branch(CoreModel):
         plan = work_book.add_sheet('plan_1')
 
         # Configuracoes da planilha
-        style_default = xlwt.easyxf('font: name Arial color black; borders: left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_colour white;')
-        style_title = xlwt.easyxf('font: name Arial, bold True, color white; borders: left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_colour black;')
-        style_subtitle = xlwt.easyxf('font: name Arial, bold True, color black; borders: left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_colour white;')
+        style_default = xlwt.easyxf(
+            'font: name Arial color black; borders: left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_colour white;')
+        style_title = xlwt.easyxf(
+            'font: name Arial, bold True, color white; borders: left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_colour black;')
+        style_subtitle = xlwt.easyxf(
+            'font: name Arial, bold True, color black; borders: left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_colour white;')
 
         # Seta tamanho das colunas
         col_n = 0
@@ -219,11 +233,12 @@ class Branch(CoreModel):
                     scout_group = user.registrationprofile_set.get().scout_group
                     if scout_group:
                         scout_group_name = scout_group.get_short_name()
-                    plan.write(line_n, col_n, scout_group_name , style_default)
+                    plan.write(line_n, col_n, scout_group_name, style_default)
 
             # Lista os usuarios nao inscritos em especialidades
-            #list_dont_inscription = branch.group.user_set.exclude(specialty__contains=Specialty.objects.all())
-            list_dont_inscription = branch.group.user_set.filter(specialty=None).exclude(registrationprofile__scout_group=None)
+            # list_dont_inscription = branch.group.user_set.exclude(specialty__contains=Specialty.objects.all())
+            list_dont_inscription = branch.group.user_set.filter(specialty=None).exclude(
+                registrationprofile__scout_group=None)
 
             if list_dont_inscription:
                 line_n += 2
@@ -242,7 +257,7 @@ class Branch(CoreModel):
                     scout_group = user.registrationprofile_set.get().scout_group
                     plan.write(line_n, col_n, scout_group.get_short_name(), style_default)
 
-        #work_book.save(file_export)
+        # work_book.save(file_export)
         return work_book
 
 
@@ -264,15 +279,18 @@ class Specialty(CoreModel):
     name = models.CharField(verbose_name=_(u"Nome"), max_length=100, null=False)
     description = RichTextField(verbose_name=_(u"Descrição"), max_length=1000, blank=True, config_name='description')
     date = models.DateField(verbose_name=_(u"Data"))
-    turn = models.CharField(verbose_name=_(u"Turno"), max_length=1, choices=CHOICE_TURN, default=TURN_ALL_DAY, blank=False)
+    turn = models.CharField(verbose_name=_(u"Turno"), max_length=1, choices=CHOICE_TURN, default=TURN_ALL_DAY,
+                            blank=False)
     num_places = models.IntegerField(verbose_name=_(u"Nº de Vagas"), default=0, blank=False, null=False)
-    inscription = models.ManyToManyField(to=User,db_table='campotec_specialty_inscription',blank=True)
+    inscription = models.ManyToManyField(to=User, db_table='campotec_specialty_inscription', blank=True)
     level_1 = models.BooleanField(verbose_name=_(u"Nível 1"), default=False)
     level_2 = models.BooleanField(verbose_name=_(u"Nível 2"), default=False)
     level_3 = models.BooleanField(verbose_name=_(u"Nível 3"), default=False)
     branch = models.ForeignKey(verbose_name=_(u"Ramo"), to=Branch, null=False)
-    active = models.CharField(verbose_name=_(u"Exibir"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
-    image = models.ImageField(verbose_name=_(u"Imagem"), upload_to=IMAGE_PATH, null=True, blank=True, help_text=_(u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
+    active = models.CharField(verbose_name=_(u"Exibir"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE,
+                              blank=False)
+    image = models.ImageField(verbose_name=_(u"Imagem"), upload_to=IMAGE_PATH, null=True, blank=True, help_text=_(
+        u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
 
     is_inscribed = False
 
@@ -314,8 +332,13 @@ class Programation(CoreModel):
     name = models.CharField(verbose_name=_(u"Nome"), max_length=100, null=False)
     date_time = models.DateTimeField(verbose_name=_(u"Data e Hora"))
     active = models.CharField(verbose_name=_(u"Exibir"), max_length=1, choices=CHOICE_ACTIVE, default='S', blank=False)
+
     description = RichTextField(verbose_name=_(u"Descrição"), max_length=1000, blank=True, config_name='description')
-    image = models.ImageField(verbose_name=_(u"Imagem"), upload_to=IMAGE_PATH, null=True, blank=True, help_text=_(u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
+    # description = models.TextField(verbose_name=_(u"Descrição"), max_length=1000, blank=True)
+    #description = tinymce_models.HTMLField(verbose_name=_(u"Descrição"), max_length=1000, blank=True)
+
+    image = models.ImageField(verbose_name=_(u"Imagem"), upload_to=IMAGE_PATH, null=True, blank=True, help_text=_(
+        u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
 
     class Meta:
         ordering = ["-name", "-description"]
@@ -334,8 +357,10 @@ class ImportInscriptions(CoreModel):
     IMPORT_INSCRIPTION_FILE_PATH = os.path.join('campotec', 'import_inscription')
 
     name = models.CharField(verbose_name=_(u"Nome"), max_length=100, blank=True, null=True)
-    file = models.FileField(verbose_name=_(u"Arquivo .XLS"), upload_to=IMPORT_INSCRIPTION_FILE_PATH, null=False, blank=False, help_text=_(u"Importe aqui o arquivo .xls com a lista de inscritos."))
-    branch = models.ForeignKey(verbose_name=_(u"Ramo"), to=Branch, null=False, help_text=_(u"Ramo ao qual pertencem os registros do arquivo .xls."))
+    file = models.FileField(verbose_name=_(u"Arquivo .XLS"), upload_to=IMPORT_INSCRIPTION_FILE_PATH, null=False,
+                            blank=False, help_text=_(u"Importe aqui o arquivo .xls com a lista de inscritos."))
+    branch = models.ForeignKey(verbose_name=_(u"Ramo"), to=Branch, null=False,
+                               help_text=_(u"Ramo ao qual pertencem os registros do arquivo .xls."))
 
     class Meta:
         ordering = ['updated_at', '-name', '-file']
@@ -394,16 +419,15 @@ class ImportInscriptions(CoreModel):
                     scout_group_number = arr[0]
                     scout_group_uf = arr[1].upper()
 
-
                 if num_register and first_name and last_name and scout_group_number and scout_group_uf:
-                    list_validation.append({'username': num_register, 'first_name': first_name, 'last_name': last_name, 'group_number': scout_group_number, 'uf': scout_group_uf})
+                    list_validation.append({'username': num_register, 'first_name': first_name, 'last_name': last_name,
+                                            'group_number': scout_group_number, 'uf': scout_group_uf})
                 else:
                     raise forms.ValidationError(u"Arquivo de importação com erro na linha %d." % line_number)
             except:
                 raise forms.ValidationError(u"Arquivo de importação com erro na linha %d." % line_number)
 
         for item in list_validation:
-
             user_tuple = User.objects.get_or_create(username=item['username'])
             user = user_tuple[0]
             user.first_name = item['first_name']
@@ -419,8 +443,9 @@ class ImportInscriptions(CoreModel):
             # Cria o RegistrationProfile
             profile = RegistrationProfile.objects.get_or_create_active_user(user)
 
-            #scout_group = ScoutGroup.objects.filter(number=scout_group_number)
-            scout_group_tuple = ScoutGroup.objects.get_or_create(number=item['group_number'], uf=get_valid_uf(item['uf']))
+            # scout_group = ScoutGroup.objects.filter(number=scout_group_number)
+            scout_group_tuple = ScoutGroup.objects.get_or_create(number=item['group_number'],
+                                                                 uf=get_valid_uf(item['uf']))
             scout_group = scout_group_tuple[0]
             scout_group.active = ACTIVE
             scout_group.save()
@@ -433,14 +458,13 @@ class ImportInscriptions(CoreModel):
             #print "REG: %s | Grupo: %s - %s " % (user.first_name, line_scout_group[0], line_scout_group[1])
 
     def xlread(self, file_read):
-        #xls = xlrd.open_workbook(file_path)
+        # xls = xlrd.open_workbook(file_path)
         import xlrd
+
         xls = xlrd.open_workbook(file_contents=file_read)
         plan = xls.sheets()[0]
         for i in xrange(1, plan.nrows, 1):
             yield plan.row_values(i)
-
-
 
 
 @receiver(pre_delete, sender=Specialty)
@@ -454,6 +478,7 @@ def delete_image(sender, instance, **kwargs):
     - Programation
     """
     instance.image.delete(False)
+
 
 @receiver(pre_save, sender=Specialty)
 @receiver(pre_save, sender=Programation)
@@ -470,7 +495,8 @@ def delete_image_on_update(sender, instance, **kwargs):
         if not instance.image.name or (obj.image.file.name != instance.image.file.name):
             # Deleta a imagem
             obj.image.delete(save=False)
-    except: pass
+    except:
+        pass
 
 
 @receiver(pre_delete, sender=ImportInscriptions)
@@ -483,6 +509,7 @@ def import_inscriptions_delete_file(sender, instance, **kwargs):
     - Programation
     """
     instance.file.delete(False)
+
 
 @receiver(pre_save, sender=ImportInscriptions)
 def import_inscriptions_delete_file_on_update(sender, instance, **kwargs):
@@ -498,12 +525,13 @@ def import_inscriptions_delete_file_on_update(sender, instance, **kwargs):
         if not instance.file.name or (obj.file.file.name != instance.file.file.name):
             # Deleta a imagem
             obj.file.delete(save=False)
-    except: pass
+    except:
+        pass
 
 
 # @receiver(post_save, sender=ImportInscriptions)
 # def import_inscriptions_delete_file_on_update(sender, instance, **kwargs):
-#     """
+# """
 #
 #     """
 #     instance.import_users()

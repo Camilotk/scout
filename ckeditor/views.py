@@ -21,7 +21,10 @@ def get_upload_filename(upload_name, user):
         user_path = ''
 
     # Generate date based path to put uploaded file.
-    date_path = datetime.now().strftime('%Y/%m/%d')
+    if getattr(settings, 'CKEDITOR_UPLOAD_DIRECTORY_DATE', False):
+        date_path = datetime.now().strftime('%Y/%m/%d')
+    else:
+        date_path = ''
 
     # Complete upload path (upload_path + date_path).
     upload_path = os.path.join(

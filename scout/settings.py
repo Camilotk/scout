@@ -48,9 +48,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'debug_toolbar',
     'bootstrap3',
+    'grappelli',
     'ckeditor',
+    'filebrowser',
     'registration',
     'core',
+    'institution',
     'scout_group',
     'campotec',
 )
@@ -113,6 +116,8 @@ STATICFILES_DIRS = (
     #os.path.join(BASE_DIR, "static"),
     ('', os.path.join(BASE_DIR, 'bootstrap_admin', 'static')),
     ('', os.path.join(BASE_DIR, 'ckeditor', 'static')),
+    ('', os.path.join(BASE_DIR, 'filebrowser', 'static')),
+    # ('', os.path.join(BASE_DIR, 'tinymce', 'static')),
     ('', os.path.join(BASE_DIR, 'institution', 'static')),
     ('', os.path.join(BASE_DIR, 'sitestatic')),
 )
@@ -120,7 +125,8 @@ STATICFILES_DIRS = (
 SERVER_STATIC_FILES = True
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
+    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'filebrowser', 'templates'),
     os.path.join(BASE_DIR, 'registration', 'templates'),
     os.path.join(BASE_DIR, 'bootstrap_admin', 'templates'),
     os.path.join(BASE_DIR, 'institution', 'templates'),
@@ -156,13 +162,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
-    "institution.context_processors.menu_loader",
-    "institution.context_processors.navigation",
+    # "institution.context_processors.menu_loader",
+    # "institution.context_processors.navigation",
 )
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 
 # CKEditor Configuration
 CKEDITOR_UPLOAD_PATH = os.path.join("uploads")
+CKEDITOR_UPLOAD_DIRECTORY_DATE = True
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
@@ -174,19 +181,20 @@ CKEDITOR_CONFIGS = {
         'width': 'auto',
         'height': 200,
         'toolbarCanCollapse': True,
-        'filebrowserWindowWidth': 'auto',
-        'filebrowserWindowHeight': 'auto',
+        'filebrowserWindowWidth': 800,
+        'filebrowserWindowHeight': 600,
+        'filebrowserImageBrowseUrl': '/admin/filebrowser/browse?pop=3',
+        'filebrowserBrowseUrl': '/admin/filebrowser/browse?pop=3',
         'toolbar':[
-            ["Source"],
             ["StrikeThrough","-","Undo","Redo","-","Cut","Copy","Paste","PasteText","PasteFromWord","Find","Replace","-",
                 "Outdent","Indent","NumberedList","BulletedList"],
-            ["-","JustifyLeft","JustifyCenter","JustifyRight","JustifyBlock"],
+            ["-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"], ["Source", "Maximize"],
             ["Format","Font","FontSize","TextColor","BGColor","-","Bold","Italic","Underline","RemoveFormat", "-","Image","Table","-","Link","Flash","-","Scayt"],
         ]
     },
     'title': {
         'autoParagraph': False,
-        'toolbar': 'full',
+        # 'toolbar': 'full',
         'width': 'auto',
         'height': 80,
         'toolbarCanCollapse': True,
@@ -200,6 +208,7 @@ CKEDITOR_CONFIGS = {
         ]
     },
 }
+
 
 # Registration Configuracoes
 ACCOUNT_ACTIVATION_DAYS = 7 # limite de dias para a ativacao da conta

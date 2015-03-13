@@ -4,19 +4,28 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
 from django.views.generic import TemplateView
-import os
 
 from campotec.auth import login as CampotecLogin, logout as CampotecLogout
 from campotec.views import CampotecHomePageView, CampotecSpecialtiesInscriptionView, CampotecHomepagePreview, CampotecInscriptionViews
-
+from filebrowser.sites import site
 
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'scout.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
+    # # filebrowser URLs
+    # url(r'^admin/filebrowser/', include(site.urls)),
+    # # grappelli URLs
+    # url(r'^grappelli/', include('grappelli.urls')),
+    # #url(r'^mce_filebrowser/', include('mce_filebrowser.urls')),
+    # url(r'^tinymce/', include('tinymce.urls')),
+
     url(r'^admin/', include(admin.site.urls)),
     url(r'^ckeditor/', include('ckeditor.urls')),
+    url(r'^admin/filebrowser/', include(site.urls)),
+
+
     url(r'^accounts/', include('registration.backends.default.urls')),
 
     # CAMPOTEC
