@@ -117,7 +117,6 @@ STATICFILES_DIRS = (
     ('', os.path.join(BASE_DIR, 'bootstrap_admin', 'static')),
     ('', os.path.join(BASE_DIR, 'ckeditor', 'static')),
     ('', os.path.join(BASE_DIR, 'filebrowser', 'static')),
-    # ('', os.path.join(BASE_DIR, 'tinymce', 'static')),
     ('', os.path.join(BASE_DIR, 'institution', 'static')),
     ('', os.path.join(BASE_DIR, 'sitestatic')),
 )
@@ -135,7 +134,7 @@ TEMPLATE_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 
