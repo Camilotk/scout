@@ -140,6 +140,7 @@ class CampotecSpecialtiesInscriptionView(TemplateView):
         context.update({
             'branch_list': branch_list,
             'programation_list': Programation.objects.filter(active=ACTIVE).order_by('date_time'),
+            'homepage': Homepage.objects.get(homepage_active=ACTIVE),
         })
         return context
 
