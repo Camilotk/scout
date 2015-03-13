@@ -39,6 +39,7 @@ MANAGERS = ADMINS
 # Application definition
 INSTALLED_APPS = (
     'bootstrap_admin',
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,7 +49,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'debug_toolbar',
     'bootstrap3',
-    'grappelli',
     'ckeditor',
     'filebrowser',
     'registration',
