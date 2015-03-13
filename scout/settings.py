@@ -39,7 +39,6 @@ MANAGERS = ADMINS
 # Application definition
 INSTALLED_APPS = (
     'bootstrap_admin',
-    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'debug_toolbar',
     'bootstrap3',
+    'grappelli',
     'ckeditor',
     'filebrowser',
     'registration',
@@ -121,6 +121,12 @@ STATICFILES_DIRS = (
     ('', os.path.join(BASE_DIR, 'sitestatic')),
 )
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
+
 SERVER_STATIC_FILES = True
 
 TEMPLATE_DIRS = (
@@ -129,12 +135,6 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'registration', 'templates'),
     os.path.join(BASE_DIR, 'bootstrap_admin', 'templates'),
     os.path.join(BASE_DIR, 'institution', 'templates'),
-)
-
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    # 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 
