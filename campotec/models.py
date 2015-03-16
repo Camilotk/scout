@@ -407,8 +407,9 @@ class ImportInscriptions(CoreModel):
             try:
                 num_register = line[0].split(' - ')[0]
                 name = line[1].split(' ')
-                first_name = name.pop(0)
-                last_name = " ".join(name)
+                # limite de 30 caracteres para fist_name e last_name
+                first_name = name.pop(0)[0:30]
+                last_name = " ".join(name)[0:30]
 
                 # Valida numeral do grupo e regiao
                 if u'–' in line[2]:
