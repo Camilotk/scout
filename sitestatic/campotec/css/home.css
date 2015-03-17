@@ -362,13 +362,18 @@ a {
 }
 @media screen and (min-width: 37.5rem) { .header { padding-top: 8rem; } }
 
-.logo { width: 20rem; margin: 1.25rem auto;  }
+.logo {
+    width: 20rem;
+    height: 20rem;
+    margin: 1.25rem auto;
+}
+
 .logo-link {
     display: block;
     padding-bottom: 53.125%;
     background: url(../img/logo.png) no-repeat;
-    width: auto;
-    height: auto;
+    width: inherit;
+    height: inherit;
 }
 
 .evento-head {
