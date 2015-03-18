@@ -147,7 +147,10 @@
                 </ul>
             {% else %} {% comment %}Nenhuma especialidade disponivel{% endcomment %}
                 <ul class="speakers-list">
-                    <li class="eventos-item" itemprop="performer" itemscope=""><div class="eventos-info"><h3 class="eventos-name">{% trans "Nenhum especialidade disponível" %}.</h3></div></li>
+                    <li class="eventos-item" itemprop="performer" itemscope="">
+                        <div class="eventos-info"><h3 class="eventos-name">{% trans "Disponível em breve." %}.</h3>
+                        </div>
+                    </li>
                 </ul>
             {% endif %}
             <br/>
