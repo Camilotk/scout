@@ -117,8 +117,9 @@ STATICFILES_DIRS = (
     ('', os.path.join(BASE_DIR, 'bootstrap_admin', 'static')),
     ('', os.path.join(BASE_DIR, 'ckeditor', 'static')),
     ('', os.path.join(BASE_DIR, 'filebrowser', 'static')),
+    ('', os.path.join(BASE_DIR, 'bootstrap3', 'static')),
+    ('', os.path.join(BASE_DIR, 'core', 'static')),
     ('', os.path.join(BASE_DIR, 'institution', 'static')),
-    ('', os.path.join(BASE_DIR, 'sitestatic')),
 )
 
 STATICFILES_FINDERS = (
