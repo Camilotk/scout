@@ -130,10 +130,11 @@ STATICFILES_FINDERS = (
 SERVER_STATIC_FILES = True
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-    os.path.join(BASE_DIR, 'filebrowser', 'templates'),
-    os.path.join(BASE_DIR, 'registration', 'templates'),
     os.path.join(BASE_DIR, 'bootstrap_admin', 'templates'),
+    os.path.join(BASE_DIR, 'registration', 'templates'),
+    os.path.join(BASE_DIR, 'filebrowser', 'templates'),
+    os.path.join(BASE_DIR, 'core', 'templates'),
+    os.path.join(BASE_DIR, 'campotec', 'templates'),
     os.path.join(BASE_DIR, 'institution', 'templates'),
 )
 

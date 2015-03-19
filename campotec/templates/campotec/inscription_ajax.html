@@ -4,7 +4,8 @@
 <strong>{% bootstrap_icon 'th' %} Vagas: {{ specialty.num_places }} &nbsp;&nbsp;&nbsp;&nbsp;
     {% bootstrap_icon 'tags' %} &nbsp;Inscritos: {{ specialty.inscription.all|length }} &nbsp;&nbsp;
     <label class="btn btn-primary btn-inscription">
-        <input class="specialty_url" name="specialty_url" type="hidden" value="{% url 'campotec-add-inscription' specialty.pk %}">
+        <input class="specialty_url" name="specialty_url" type="hidden"
+               value="{% url 'campotec-add-inscription' specialty.pk %}">
 
         {% comment %}
         <input class="check-inscription" type="checkbox" value="Y" name="check_inscription" {% if specialty.is_inscribed %} checked {% endif %}>
