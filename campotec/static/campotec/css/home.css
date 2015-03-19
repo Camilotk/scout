@@ -1057,11 +1057,12 @@ a:hover {
 
 .programacao-intro {
     width: 23.40426%;
+    float: left;
 }
 
 .programacao-slot {
     width: 76.59574%;
-    padding: 0.3125rem 0 0.3125rem 2.12766%;
+    padding: 0 0 0 0.5rem;
 }
 
 .programacao-intro-board {

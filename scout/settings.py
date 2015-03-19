@@ -114,6 +114,7 @@ STATICFILES_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     #os.path.join(BASE_DIR, "static"),
+    # ('', os.path.join(BASE_DIR, 'grappelli', 'static')),
     ('', os.path.join(BASE_DIR, 'bootstrap_admin', 'static')),
     ('', os.path.join(BASE_DIR, 'ckeditor', 'static')),
     ('', os.path.join(BASE_DIR, 'filebrowser', 'static')),
@@ -131,6 +132,7 @@ STATICFILES_FINDERS = (
 SERVER_STATIC_FILES = True
 
 TEMPLATE_DIRS = (
+    #os.path.join(BASE_DIR, 'grappelli', 'templates'),
     os.path.join(BASE_DIR, 'bootstrap_admin', 'templates'),
     os.path.join(BASE_DIR, 'registration', 'templates'),
     os.path.join(BASE_DIR, 'filebrowser', 'templates'),

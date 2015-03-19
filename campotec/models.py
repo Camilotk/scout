@@ -17,6 +17,7 @@ from django.dispatch.dispatcher import receiver
 from django.conf import settings
 from ckeditor.fields import RichTextField
 from core.models import CoreModel, CHOICE_ACTIVE, ACTIVE, INACTIVE, get_valid_uf
+from filebrowser.fields import FileBrowseField
 from registration.models import RegistrationProfile
 from scout_group.models import ScoutGroup
 
@@ -32,6 +33,8 @@ class Homepage(CoreModel):
     homepage_logo = models.ImageField(verbose_name=_(u"Cabeçalho Logo"), upload_to=HOMEPAGE_IMAGE_PATH, null=True,
                                       blank=True, help_text=_(
             u"Para não distorcer e manter a responsividade, envie uma imagem com resolução média de 300 x 300px."))
+
+    # homepage_logo = FileBrowseField(verbose_name=_(u"Cabeçalho Logo"), max_length=200, blank=True, null=True, help_text=_(u"Para não distorcer e manter a responsividade, envie uma imagem com resolução média de 300 x 300px."))
 
     homepage_title = RichTextField(verbose_name=_(u"Cabeçalho Título"), blank=True, config_name='description')
     homepage_image_background = models.ImageField(verbose_name=_(u"Cabeçalho Imagem de Fundo"),

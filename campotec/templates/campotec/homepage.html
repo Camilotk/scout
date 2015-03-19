@@ -194,7 +194,6 @@
 
                             {% for date in date_list %}
                                 <p><strong>{{ date.list.0.date_time|date:"d \d\e F \d\e Y" }}</strong></p>
-
                                 {% for programation in date.list %}
                                     <li id="programacao-credenciamento" class="programacao-item programacao-item-other">
                                         <div class="programacao-intro">
@@ -208,7 +207,6 @@
                                             <p>{{ programation.description|safe }}</p></div>
                                     </li>
                                 {% endfor %}
-
                             {% endfor %}
                         </ul>
                     {% else %}
