@@ -156,6 +156,7 @@ def get_settings_var(directory=DIRECTORY):
     settings_var['CONVERT_FILENAME'] = CONVERT_FILENAME
     # Traverse directories when searching
     settings_var['SEARCH_TRAVERSE'] = SEARCH_TRAVERSE
+    settings_var['DIRECTORY'] = DIRECTORY
     return settings_var
 
 
@@ -329,7 +330,7 @@ class FileBrowserSite(object):
             # date/type filter
             append = False
             if (not filter_type or fileobject.filetype == filter_type) and (
-                not filter_date or get_filterdate(filter_date, fileobject.date or 0)):
+                        not filter_date or get_filterdate(filter_date, fileobject.date or 0)):
                 append = True
             # search
             if do_search and not re_q.search(fileobject.filename.lower()):
@@ -583,6 +584,7 @@ class FileBrowserSite(object):
             signals.filebrowser_pre_upload.send(sender=request, path=folder, file=filedata, site=self)
             uploadedfile = handle_file_upload(path, filedata, site=self)
 
+            # Caminho do arquivo desde o diretorio MEDIA ate seu nome, usado no retorno do metodo
             if file_already_exists and OVERWRITE_EXISTING:
                 old_file = smart_text(file_path)
                 new_file = smart_text(uploadedfile)
@@ -601,7 +603,7 @@ class FileBrowserSite(object):
             signals.filebrowser_post_upload.send(sender=request, path=folder, file=f, site=self)
 
             # let Ajax Upload know whether we saved it or not
-            ret_json = {'success': True, 'filename': f.filename}
+            ret_json = {'success': True, 'filename': f.filename, 'filepath': uploadedfile}
             return HttpResponse(json.dumps(ret_json))
 
 

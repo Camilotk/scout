@@ -26,20 +26,22 @@ class Homepage(CoreModel):
     """
     Pagina inicial
     """
-    HOMEPAGE_IMAGE_PATH = os.path.join('campotec', 'homepage')
+    HOMEPAGE_IMAGE_PATH = "campotec/homepage"
 
     homepage_active = models.CharField(verbose_name=_(u"Ativar Página Inicial"), max_length=1, choices=CHOICE_ACTIVE,
                                        default=ACTIVE, blank=False)
-    homepage_logo = models.ImageField(verbose_name=_(u"Cabeçalho Logo"), upload_to=HOMEPAGE_IMAGE_PATH, null=True,
-                                      blank=True, help_text=_(
-            u"Para não distorcer e manter a responsividade, envie uma imagem com resolução média de 300 x 300px."))
-
-    # homepage_logo = FileBrowseField(verbose_name=_(u"Cabeçalho Logo"), max_length=200, blank=True, null=True, help_text=_(u"Para não distorcer e manter a responsividade, envie uma imagem com resolução média de 300 x 300px."))
-
+    # Metodo tradicional para criar o campo de imagem
+    # homepage_logo = models.ImageField(verbose_name=_(u"Cabeçalho Logo"), upload_to=HOMEPAGE_IMAGE_PATH, null=True,
+    # blank=True, help_text=_(
+    #         u"Para não distorcer e manter a responsividade, envie uma imagem com resolução média de 300 x 300px."))
+    homepage_logo = FileBrowseField(verbose_name=_(u"Cabeçalho Logo"), directory=HOMEPAGE_IMAGE_PATH, max_length=200,
+                                    blank=True, null=True, help_text=_(
+            u"Para não distorcer e manter a responsividade, envie uma imagem com resolução de 300x300px."))
     homepage_title = RichTextField(verbose_name=_(u"Cabeçalho Título"), blank=True, config_name='description')
-    homepage_image_background = models.ImageField(verbose_name=_(u"Cabeçalho Imagem de Fundo"),
-                                                  upload_to=HOMEPAGE_IMAGE_PATH, null=True, blank=True, help_text=_(
-            u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
+    homepage_image_background = FileBrowseField(verbose_name=_(u"Cabeçalho Imagem de Fundo"),
+                                                directory=HOMEPAGE_IMAGE_PATH,
+                                                max_length=200, blank=True, null=True, help_text=_(
+            u"Para não distorcer, envie uma imagem com resolução máxima de 2362x591px."))
 
     information_active = models.CharField(verbose_name=_(u"Exibir Bloco Informações"), max_length=1,
                                           choices=CHOICE_ACTIVE, default=ACTIVE, blank=False)
@@ -268,7 +270,7 @@ class Specialty(CoreModel):
     """
     Especialidades
     """
-    IMAGE_PATH = os.path.join('campotec', 'specialty')
+    SPECIALTY_IMAGE_PATH = 'campotec/specialty'
 
     TURN_MORNING = 'M'
     TURN_AFTER = 'T'
@@ -280,6 +282,9 @@ class Specialty(CoreModel):
     )
 
     name = models.CharField(verbose_name=_(u"Nome"), max_length=100, null=False)
+    image = FileBrowseField(verbose_name=_(u"Imagem"), directory=SPECIALTY_IMAGE_PATH,
+                            max_length=200, blank=True, null=True,
+                            help_text=_(u"Para não distorcer, envie uma imagem com resolução máxima de 200x200 px."))
     description = RichTextField(verbose_name=_(u"Descrição"), max_length=1000, blank=True, config_name='description')
     date = models.DateField(verbose_name=_(u"Data"))
     turn = models.CharField(verbose_name=_(u"Turno"), max_length=1, choices=CHOICE_TURN, default=TURN_ALL_DAY,
@@ -292,9 +297,6 @@ class Specialty(CoreModel):
     branch = models.ForeignKey(verbose_name=_(u"Ramo"), to=Branch, null=False)
     active = models.CharField(verbose_name=_(u"Exibir"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE,
                               blank=False)
-    image = models.ImageField(verbose_name=_(u"Imagem"), upload_to=IMAGE_PATH, null=True, blank=True, help_text=_(
-        u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
-
     is_inscribed = False
 
     class Meta:
@@ -330,18 +332,15 @@ class Programation(CoreModel):
     """
     Programação do Evento
     """
-    IMAGE_PATH = os.path.join('campotec', 'programation')
+    PROGRAMATION_IMAGE_PATH = os.path.join('campotec', 'programation')
 
     name = models.CharField(verbose_name=_(u"Nome"), max_length=100, null=False)
+    image = FileBrowseField(verbose_name=_(u"Imagem"), directory=PROGRAMATION_IMAGE_PATH,
+                            max_length=200, blank=True, null=True,
+                            help_text=_(u"Para não distorcer, envie uma imagem com resolução máxima de 200x200 px."))
     date_time = models.DateTimeField(verbose_name=_(u"Data e Hora"))
     active = models.CharField(verbose_name=_(u"Exibir"), max_length=1, choices=CHOICE_ACTIVE, default='S', blank=False)
-
     description = RichTextField(verbose_name=_(u"Descrição"), max_length=1000, blank=True, config_name='description')
-    # description = models.TextField(verbose_name=_(u"Descrição"), max_length=1000, blank=True)
-    #description = tinymce_models.HTMLField(verbose_name=_(u"Descrição"), max_length=1000, blank=True)
-
-    image = models.ImageField(verbose_name=_(u"Imagem"), upload_to=IMAGE_PATH, null=True, blank=True, help_text=_(
-        u"Para não distorcer, envie uma imagem com resolução máxima de 200 x 200 px."))
 
     class Meta:
         ordering = ["-name", "-description"]
@@ -471,8 +470,8 @@ class ImportInscriptions(CoreModel):
             yield plan.row_values(i)
 
 
-@receiver(pre_delete, sender=Specialty)
-@receiver(pre_delete, sender=Programation)
+# @receiver(pre_delete, sender=Specialty)
+# @receiver(pre_delete, sender=Programation)
 def delete_image(sender, instance, **kwargs):
     """
     Signal para deletar arquivo quando removido o registro.
@@ -484,8 +483,8 @@ def delete_image(sender, instance, **kwargs):
     instance.image.delete(False)
 
 
-@receiver(pre_save, sender=Specialty)
-@receiver(pre_save, sender=Programation)
+# @receiver(pre_save, sender=Specialty)
+# @receiver(pre_save, sender=Programation)
 def delete_image_on_update(sender, instance, **kwargs):
     """
     Signal para deletar arquivo quando atualizado o registro.

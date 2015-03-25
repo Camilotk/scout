@@ -61,9 +61,9 @@ ADMIN_THUMBNAIL = getattr(settings, 'FILEBROWSER_ADMIN_THUMBNAIL', 'admin_thumbn
 # PLACEHOLDER
 
 # Path to placeholder image (relative to storage location)
-PLACEHOLDER = getattr(settings, "FILEBROWSER_PLACEHOLDER", "")
+PLACEHOLDER = getattr(settings, "FILEBROWSER_PLACEHOLDER", "Imagem não encontrada")
 # Show Placeholder if the original image does not exist
-SHOW_PLACEHOLDER = getattr(settings, "FILEBROWSER_SHOW_PLACEHOLDER", False)
+SHOW_PLACEHOLDER = getattr(settings, "FILEBROWSER_SHOW_PLACEHOLDER", True)
 # Always show placeholder (even if the original image exists)
 FORCE_PLACEHOLDER = getattr(settings, "FILEBROWSER_FORCE_PLACEHOLDER", False)
 
@@ -82,11 +82,11 @@ for exts in EXTENSIONS.values():
 EXCLUDE = getattr(settings, 'FILEBROWSER_EXCLUDE',
                   (r'_(%(exts)s)_.*_q\d{1,3}\.(%(exts)s)' % {'exts': ('|'.join(EXTENSION_LIST))},))
 # Max. Upload Size in Bytes.
-#MAX_UPLOAD_SIZE = getattr(settings, "FILEBROWSER_MAX_UPLOAD_SIZE", 10485760)
+# MAX_UPLOAD_SIZE = getattr(settings, "FILEBROWSER_MAX_UPLOAD_SIZE", 10485760)
 MAX_UPLOAD_SIZE = getattr(settings, "FILEBROWSER_MAX_UPLOAD_SIZE", 52428800)  # 50MB
 # Normalize filename and remove all non-alphanumeric characters
 # except for underscores, spaces & dashes.
-NORMALIZE_FILENAME = getattr(settings, "FILEBROWSER_NORMALIZE_FILENAME", False)
+NORMALIZE_FILENAME = getattr(settings, "FILEBROWSER_NORMALIZE_FILENAME", True)
 # Convert Filename (replace spaces and convert to lowercase)
 CONVERT_FILENAME = getattr(settings, "FILEBROWSER_CONVERT_FILENAME", True)
 # Max. Entries per Page
@@ -105,7 +105,7 @@ SEARCH_TRAVERSE = getattr(settings, "FILEBROWSER_SEARCH_TRAVERSE", False)
 # Default Upload and Version Permissions
 DEFAULT_PERMISSIONS = getattr(settings, "FILEBROWSER_DEFAULT_PERMISSIONS", 0o755)
 # Overwrite existing files on upload
-OVERWRITE_EXISTING = getattr(settings, "FILEBROWSER_OVERWRITE_EXISTING", True)
+OVERWRITE_EXISTING = getattr(settings, "FILEBROWSER_OVERWRITE_EXISTING", False)
 
 # EXTRA TRANSLATION STRINGS
 

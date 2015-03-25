@@ -1,28 +1,45 @@
 {% load i18n fb_versions %}
-<input id="{{ final_attrs.id }}" type="text"
-       class="vFileBrowseField{% if final_attrs.class %} {{ final_attrs.class }}{% endif %}"
-       name="{{ final_attrs.name }}" value="{{ value.path }}"/><a
-        href="javascript:FileBrowser.show('{{ final_attrs.id }}', '{{ url }}?pop=1{% if final_attrs.directory %}&amp;dir={{ final_attrs.directory|urlencode|urlencode }}{% endif %}{% if final_attrs.format %}&amp;type={{ final_attrs.format }}{% endif %}');"
-        class="fb_show">Enviar</a>
+<div class="input-group">
+    <input id="{{ final_attrs.id }}" type="text"
+           class="form-control vFileBrowseField{% if final_attrs.class %} {{ final_attrs.class }}{% endif %}"
+           name="{{ final_attrs.name }}" value="{{ value.path }}"/>
+    <span class="input-group-btn">
+    <button onclick="FileBrowser.show('{{ final_attrs.id }}', '{{ url }}?pop=1{% if final_attrs.directory %}&amp;dir={{ final_attrs.directory|urlencode|urlencode }}{% endif %}{% if final_attrs.format %}&amp;type={{ final_attrs.format }}{% endif %}');"
+            class="btn btn-default fb_show" type="button">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        Enviar / Buscar
+    </button>
+    <button class="btn btn-default" onclick="document.getElementById('{{ final_attrs.id }}').value='';return false;"
+            type="button">Limpar
+    </button>
+    </span>
+</div>
+
+{% comment %}
+<a href="javascript:FileBrowser.show('{{ final_attrs.id }}', '{{ url }}?pop=1{% if final_attrs.directory %}&amp;dir={{ final_attrs.directory|urlencode|urlencode }}{% endif %}{% if final_attrs.format %}&amp;type={{ final_attrs.format }}{% endif %}');" class="fb_show">Buscar/Enviar</a>
+| <a href="#" onclick="document.getElementById('{{ final_attrs.id }}').value='';return false;">Limpar</a>
+{% endcomment %}
+
 {% if value.filetype == "Image" and value.exists %}
     {% version_object value.path final_attrs.ADMIN_THUMBNAIL as thumbnail_version %}
     {% if thumbnail_version %}
         <p class="preview" id="preview_{{ final_attrs.id }}">
             <a href="{{ value.url }}" target="_blank" id="previewlink_{{ final_attrs.id }}">
-                <img id="previewimage_{{ final_attrs.id }}" src="{{ thumbnail_version.url }}" class="preview"/>
+                <img id="previewimage_{{ final_attrs.id }}" src="{{ thumbnail_version.url }}" class="preview"
+                     style="height:60px;"/>
             </a>
         </p>
     {% else %}
         <p class="preview" id="preview_{{ final_attrs.id }}" style="display: none;">
             <a href="javascript://" target="_self" id="previewlink_{{ final_attrs.id }}">
-                <img id="previewimage_{{ final_attrs.id }}" class="preview" src=""/>
+                <img id="previewimage_{{ final_attrs.id }}" class="preview" src="" style="height:60px;"/>
             </a>
         </p>
     {% endif %}
 {% else %}
     <p class="preview" id="preview_{{ final_attrs.id }}" style="display: none;">
         <a href="javascript://" target="_self" id="previewlink_{{ final_attrs.id }}">
-            <img id="previewimage_{{ final_attrs.id }}" class="preview" src=""/>
+            <img id="previewimage_{{ final_attrs.id }}" class="preview" src="" style="height:60px;"/>
         </a>
     </p>
 {% endif %}

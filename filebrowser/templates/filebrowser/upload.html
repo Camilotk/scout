@@ -1,8 +1,8 @@
 {#{% extends "admin/base_site.html" %}#}
-{% extends 'filebrowser/grappelli_base_site.html' %}
+{% extends 'filebrowser/index.html' %}
 
 <!-- LOADING -->
-{% load admin_static i18n l10n fb_tags %}
+{% load admin_static i18n l10n fb_tags fb_versions %}
 {% load url from future %}
 
 <!-- STYLESHEETS -->
@@ -91,7 +91,9 @@
                     },
                     onComplete: function (id, fileName, resp) {
                         if (resp.success) {
+                            var btn_select = '<button class="grp-button fb_selectlink" onclick="FileSubmit(\'/' + resp.filepath + '\', \'{{ MEDIA_URL }}' + resp.filepath + '\', \'{{ MEDIA_URL }}' + resp.filepath + '\', \'Image\');" style="margin:10px 0px 18px 0px;float:none;">Selecionar</button>';
                             this.getItem(id).find('.qq-upload-file').html(resp.filename);
+                            this.getItem(id).append(btn_select);
                         }
                     },
                     showMessage: function (message) {
