@@ -17,10 +17,10 @@
 {% else %}
   <p class="permission-warning">{% trans "You don't have permission to edit anything." %}</p>
 {% endif %}
-
-<hr>
-<ul class="nav nav-sidebar app-scout_group module">
-    <a href="{% url 'filebrowser:fb_browse' %}" target="_blank" title="Gerenciador de Arquivos">
-        Gerenciador de Arquivos
+{# LINK PARA O GERENCIADOR DE ARQUIVOS - abre em nova aba #}
+<div class="nav nav-sidebar app-scout_group module">
+    <a href="{% url 'filebrowser:fb_browse' %}" class="navbar-brand section" target="_blank"
+       title="Gerenciador de Arquivos" style="padding: 12px 5px 12px 5px;font-weight: normal;font-size:14px;">
+    Gerenciador de Arquivos
     </a>
-</ul>
+</div>
