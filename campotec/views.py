@@ -1,13 +1,12 @@
 # -*- coding:utf-8 -*-
 from django.http import JsonResponse, HttpResponse, Http404
-from django.shortcuts import render_to_response, redirect
 
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import ListView, FormView, TemplateView
 from django.conf import settings
 
-from auth import LoginForm, campotec_login_required
+from auth import LoginForm, campotec_login_required, campotec_permission_required
 from models import Branch, Programation, Specialty, Homepage
 from core.models import ACTIVE
 import json
@@ -39,6 +38,10 @@ class CampotecHomePageView(TemplateView):
 class CampotecHomepagePreview(TemplateView):
 
     template_name = 'campotec/homepage_preview.html'
+
+    @method_decorator(campotec_permission_required('campotec.change_homepage'))
+    def dispatch(self, *args, **kwargs):
+        return super(CampotecHomepagePreview, self).dispatch(*args, **kwargs)
 
     def get(self, request, id=None, *args, **kwargs):
         self.id_homepage = id
@@ -91,7 +94,9 @@ class CampotecSpecialtiesInscriptionView(TemplateView):
 
             if num_specialty >= 2:
                 for specialty in specialty_list:
-                    if specialty.branch.group in request.user.groups.all():
+                    # VALIDA SE A INSCRICAO ESTA ATIVA specialty.active_inscription = True
+                    # E SE o ramo da especialidade eh igual ao ramo do usuario
+                    if specialty.active_inscription and specialty.branch.group in request.user.groups.all():
                         if len(specialty.inscription.all()) < specialty.num_places:
                             #Valida se tem mais de uma especialidade no mesmo turno/dia
                             if not [item for item in list_for_inscription if (item.date == specialty.date and (item.turn == specialty.turn or item.turn == Specialty.TURN_ALL_DAY))]:
@@ -117,7 +122,7 @@ class CampotecSpecialtiesInscriptionView(TemplateView):
                         context['error'] = _(u"Especialidades selecionadas não são do seu Ramo. Selecione outras.")
                         Specialty.remove_all_inscriptions_user(request.user)
                         break
-                # end for
+                # end for specialty_list
                 # se não ocorreu erros inscreve o usuario nas especialidades list_for_inscription
                 if valid_turno == 4 and not context['error']:
                     for specialty in list_for_inscription:

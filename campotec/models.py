@@ -31,9 +31,7 @@ class Homepage(CoreModel):
     homepage_active = models.CharField(verbose_name=_(u"Ativar Página Inicial"), max_length=1, choices=CHOICE_ACTIVE,
                                        default=ACTIVE, blank=False)
     # Metodo tradicional para criar o campo de imagem
-    # homepage_logo = models.ImageField(verbose_name=_(u"Cabeçalho Logo"), upload_to=HOMEPAGE_IMAGE_PATH, null=True,
-    # blank=True, help_text=_(
-    #         u"Para não distorcer e manter a responsividade, envie uma imagem com resolução média de 300 x 300px."))
+    # homepage_logo = models.ImageField(verbose_name=_(u"Cabeçalho Logo"), upload_to=HOMEPAGE_IMAGE_PATH, null=True, blank=True, help_text=_(u"Para não distorcer e manter a responsividade, envie uma imagem com resolução média de 300 x 300px."))
     homepage_logo = FileBrowseField(verbose_name=_(u"Cabeçalho Logo"), directory=HOMEPAGE_IMAGE_PATH, max_length=200,
                                     blank=True, null=True, help_text=_(
             u"Para não distorcer e manter a responsividade, envie uma imagem com resolução de 300x300px."))
@@ -269,6 +267,9 @@ class Branch(CoreModel):
 class Specialty(CoreModel):
     """
     Especialidades
+    * ACTIVE_INSCRIPTION: habilita inscricao na especialidade
+    * SHOW_NUM_PLACES: exibe quantidade de vagas
+    * SHOW_NUM_INSRIPTIONS: exibe quantidade de inscritos
     """
     SPECIALTY_IMAGE_PATH = 'campotec/specialty'
 
@@ -282,6 +283,8 @@ class Specialty(CoreModel):
     )
 
     name = models.CharField(verbose_name=_(u"Nome"), max_length=100, null=False)
+    active = models.CharField(verbose_name=_(u"Exibir"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE,
+                              blank=False)
     image = FileBrowseField(verbose_name=_(u"Imagem"), directory=SPECIALTY_IMAGE_PATH,
                             max_length=200, blank=True, null=True,
                             help_text=_(u"Para não distorcer, envie uma imagem com resolução máxima de 200x200 px."))
@@ -290,13 +293,18 @@ class Specialty(CoreModel):
     turn = models.CharField(verbose_name=_(u"Turno"), max_length=1, choices=CHOICE_TURN, default=TURN_ALL_DAY,
                             blank=False)
     num_places = models.IntegerField(verbose_name=_(u"Nº de Vagas"), default=0, blank=False, null=False)
-    inscription = models.ManyToManyField(to=User, db_table='campotec_specialty_inscription', blank=True)
+    inscription = models.ManyToManyField(verbose_name=_(u"Inscrições"), to=User,
+                                         db_table='campotec_specialty_inscription', blank=True)
     level_1 = models.BooleanField(verbose_name=_(u"Nível 1"), default=False)
     level_2 = models.BooleanField(verbose_name=_(u"Nível 2"), default=False)
     level_3 = models.BooleanField(verbose_name=_(u"Nível 3"), default=False)
     branch = models.ForeignKey(verbose_name=_(u"Ramo"), to=Branch, null=False)
-    active = models.CharField(verbose_name=_(u"Exibir"), max_length=1, choices=CHOICE_ACTIVE, default=ACTIVE,
-                              blank=False)
+    active_inscription = models.BooleanField(verbose_name=_(u"Ativar Inscrição"), default=True, help_text=_(
+        u"Ativa a inscrição na especialidade, se marcado exibe o botão para inscrição."))
+    show_num_places = models.BooleanField(verbose_name=_(u"Exibir Nº de Vagas"), default=True,
+                                          help_text=_(u"Se marcado sempre exibe o Número de Vagas da especialidade."))
+    show_num_inscriptions = models.BooleanField(verbose_name=_(u"Exibir Nº de Inscritos"), default=True, help_text=_(
+        u"Se marcado sempre exibe a quantidade de inscritos na especialidade."))
     is_inscribed = False
 
     class Meta:

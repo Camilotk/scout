@@ -18,7 +18,9 @@ from core.admin import activate, inactivate
 
 
 class HomepageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'homepage_title_short', 'homepage_active', 'information_active', 'local_active', 'observation_active')
+    list_display = (
+    'id', 'homepage_title_short', 'link_url_homepage_preview', 'homepage_active', 'information_active', 'local_active',
+    'observation_active')
     list_display_links = ('id', 'homepage_title_short', 'homepage_active',)
     actions = ('duplicate_item',)
 
@@ -39,6 +41,17 @@ class HomepageAdmin(admin.ModelAdmin):
             obj_new = obj.duplicate_save()
             return HttpResponseRedirect(redirect_to=reverse('admin:campotec_homepage_change', args=(obj_new.id,)))
     duplicate_item.short_description = _(u"Duplicar Item")
+
+
+    def link_url_homepage_preview(self, obj):
+        """
+        Cria link para pre-visualizar a pagina
+        """
+        return '<a href="%s" target="_blank">%s</a>' % (
+        reverse('campotec-homepage-preview', args=(obj.pk,)), unicode(_(u"Pré-visualizar")))
+
+    link_url_homepage_preview.allow_tags = True
+    link_url_homepage_preview.short_description = _(u"Pré-visualização")
 
 
 class BranchAdmin(admin.ModelAdmin):
@@ -87,7 +100,8 @@ class BranchAdmin(admin.ModelAdmin):
 
 
 class SpecialtyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description_short', 'date', 'turn', 'num_places', 'num_inscriptions' ,'level_1', 'level_2', 'level_3', 'branch_link', 'active', 'image_thumb')
+    list_display = ('name', 'active', 'description_short', 'date', 'turn', 'num_places', 'num_inscriptions',
+                    'branch_link', 'active_inscription', 'show_num_places', 'show_num_inscriptions', 'image_thumb')
     #list_display_links = ('name',)
     search_fields = ('name', 'description')
     ordering = ('active', 'name', 'description')
@@ -98,6 +112,8 @@ class SpecialtyAdmin(admin.ModelAdmin):
         ('level_2', admin.BooleanFieldListFilter),
         ('level_3', admin.BooleanFieldListFilter),
     )
+    fields = ('name', 'active', 'image', 'description', 'date', 'turn', 'num_places', 'branch', 'active_inscription',
+              'show_num_places', 'show_num_inscriptions', 'inscription',)
     actions = [inactivate, activate,]
 
     def description_short(self, obj):

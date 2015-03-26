@@ -54,16 +54,23 @@
 
                                             <p class="eventos-bio">{{ specialty.description|safe }}</p>
 
-                                            <p class="eventos-inscriptions"><strong>{% bootstrap_icon 'th' %}
-                                                Vagas: {{ specialty.num_places }} &nbsp;&nbsp;&nbsp;&nbsp;
-                                                {% bootstrap_icon 'tags' %}
-                                                &nbsp;Inscritos: {{ specialty.inscription.all|length }} &nbsp;&nbsp;
-                                                <label class="btn btn-primary btn-inscription">
-                                                    <input class="check-inscription" type="checkbox"
-                                                           value="{{ specialty.pk }}" name="check_inscription"
-                                                            {% if specialty.is_inscribed %} checked {% endif %}>
-                                                    Participar!
-                                                </label>
+                                            <p class="eventos-inscriptions"><strong>
+                                                {% if specialty.show_num_places %}
+                                                    {% bootstrap_icon 'th' %}
+                                                    Vagas: {{ specialty.num_places }} &nbsp;&nbsp;&nbsp;&nbsp;
+                                                {% endif %}
+                                                {% if specialty.show_num_inscriptions %}
+                                                    {% bootstrap_icon 'tags' %}
+                                                    &nbsp;Inscritos: {{ specialty.inscription.all|length }} &nbsp;&nbsp;
+                                                {% endif %}
+                                                {% if specialty.active_inscription %}
+                                                    <label class="btn btn-primary btn-inscription">
+                                                        <input class="check-inscription" type="checkbox"
+                                                               value="{{ specialty.pk }}" name="check_inscription"
+                                                                {% if specialty.is_inscribed %} checked {% endif %}>
+                                                        Participar!
+                                                    </label>
+                                                {% endif %}
                                             </strong>
                                             </p>
                                         </div>

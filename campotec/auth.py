@@ -2,7 +2,7 @@
 import urlparse
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, user_logged_out
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.urlresolvers import reverse
@@ -25,10 +25,20 @@ def campotec_login_required(function=None, redirect_field_name=REDIRECT_FIELD_NA
     return login_required(function, redirect_field_name, login_url)
 
 
+def campotec_permission_required(perm, login_url='/admin/login', raise_exception=False):
+    """
+    Sobrescreve o metodo que exige login para acessar a view
+    Usar com decorator sobre o metodo que desejar o login:
+    @method_decorator(campotec_login_required)
+    """
+    return permission_required(perm, login_url=login_url, raise_exception=raise_exception)
+
+
 class LoginForm(AuthenticationForm):
     """
     Personalizações no formulario de Login dos usuários
     """
+
     def __init__(self, request=None, *args, **kwargs):
         super(LoginForm, self).__init__(request, *args, **kwargs)
         self.fields['username'].label = _(u"Nº Registro UEB")
@@ -51,7 +61,7 @@ def login(request, template_name='campotec/login.html', redirect_field_name=REDI
 
             # Use default setting if redirect_to is empty
             if not redirect_to:
-                #redirect_to = settings.LOGIN_REDIRECT_URL
+                # redirect_to = settings.LOGIN_REDIRECT_URL
                 redirect_to = reverse('campotec-inscription')
 
             # Heavier security check -- don't allow redirection to a different
@@ -93,5 +103,6 @@ def logout(request):
     request.session.flush()
     if hasattr(request, 'user'):
         from django.contrib.auth.models import AnonymousUser
+
         request.user = AnonymousUser()
     return redirect('campotec-homepage')
