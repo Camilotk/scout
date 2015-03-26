@@ -69,9 +69,9 @@
                     {% if user.is_authenticated %}
                         <a href="{% url 'campotec-inscription' %}" id="btn-inscription" class="call-action-link">Inscreva-se</a>
                     {% else %}
-
+			{% comment %}
                         <a href="#home" id="btn-inscription" class="call-action-link">Inscreva-se</a>
-
+			{% endcomment %}
                         <div id="login_container" class="login-container" style="display:none;">
                             <form action="{% url 'campotec-login' %}" method="post" id="login-form"
                                   class="form form-horizontal" role="form">
