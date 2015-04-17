@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_PATH = BASE_DIR
-#PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -56,6 +57,7 @@ INSTALLED_APPS = (
     'institution',
     'scout_group',
     'campotec',
+    'events',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -79,8 +81,8 @@ WSGI_APPLICATION = 'scout.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'scout.db', # Or path to database file if using sqlite3: os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'scout.db',  # Or path to database file if using sqlite3: os.path.join(BASE_DIR, 'db.sqlite3'),
         #'USER': 'postgres', # Not used with sqlite3.
         #'PASSWORD': '', # Not used with sqlite3.
         #'HOST': 'localhost', # Set to empty string for localhost. Not used with sqlite3.
@@ -121,6 +123,7 @@ STATICFILES_DIRS = (
     ('', os.path.join(BASE_DIR, 'bootstrap3', 'static')),
     ('', os.path.join(BASE_DIR, 'core', 'static')),
     ('', os.path.join(BASE_DIR, 'institution', 'static')),
+    ('', os.path.join(BASE_DIR, 'events', 'static')),
 )
 
 STATICFILES_FINDERS = (
@@ -139,6 +142,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'core', 'templates'),
     os.path.join(BASE_DIR, 'campotec', 'templates'),
     os.path.join(BASE_DIR, 'institution', 'templates'),
+    os.path.join(BASE_DIR, 'events', 'templates'),
 )
 
 
@@ -156,6 +160,7 @@ MEDIA_URL = '/media/'
 # App bootstrap_admin
 # For Sidebar Menu (List of apps and models) (RECOMMENDED)
 from django.conf import global_settings
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.request",
@@ -188,11 +193,13 @@ CKEDITOR_CONFIGS = {
         'filebrowserWindowHeight': 600,
         'filebrowserImageBrowseUrl': '/admin/filebrowser/browse?pop=3',
         'filebrowserBrowseUrl': '/admin/filebrowser/browse?pop=3',
-        'toolbar':[
-            ["StrikeThrough","-","Undo","Redo","-","Cut","Copy","Paste","PasteText","PasteFromWord","Find","Replace","-",
-                "Outdent","Indent","NumberedList","BulletedList"],
+        'toolbar': [
+            ["StrikeThrough", "-", "Undo", "Redo", "-", "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "Find",
+             "Replace", "-",
+             "Outdent", "Indent", "NumberedList", "BulletedList"],
             ["-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"], ["Source", "Maximize"],
-            ["Format","Font","FontSize","TextColor","BGColor","-","Bold","Italic","Underline","RemoveFormat", "-","Image","Table","-","Link","Flash","-","Scayt"],
+            ["Format", "Font", "FontSize", "TextColor", "BGColor", "-", "Bold", "Italic", "Underline", "RemoveFormat",
+             "-", "Image", "Table", "-", "Link", "Flash", "-", "Scayt"],
         ]
     },
     'title': {
@@ -203,25 +210,26 @@ CKEDITOR_CONFIGS = {
         'toolbarCanCollapse': True,
         'filebrowserWindowWidth': 'auto',
         'filebrowserWindowHeight': 'auto',
-        'toolbar':[
+        'toolbar': [
             ["Source"],
-            ["StrikeThrough","-","Undo","Redo","-","Cut","Copy","Paste"],
-            ["-","JustifyLeft","JustifyCenter","JustifyRight","JustifyBlock"],
-            ["Format","Font","FontSize","TextColor","BGColor","-","Bold","Italic","Underline","-","Image","-","Link","-","Scayt"],
+            ["StrikeThrough", "-", "Undo", "Redo", "-", "Cut", "Copy", "Paste"],
+            ["-", "JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
+            ["Format", "Font", "FontSize", "TextColor", "BGColor", "-", "Bold", "Italic", "Underline", "-", "Image",
+             "-", "Link", "-", "Scayt"],
         ]
     },
 }
 
 
 # Registration Configuracoes
-ACCOUNT_ACTIVATION_DAYS = 7 # limite de dias para a ativacao da conta
-REGISTRATION_AUTO_LOGIN = True # SE True, os usuarios sao automaticamente logados ao clicar no link de ativacao da conta enviado por email. Default eh False
+ACCOUNT_ACTIVATION_DAYS = 7  # limite de dias para a ativacao da conta
+REGISTRATION_AUTO_LOGIN = True  # SE True, os usuarios sao automaticamente logados ao clicar no link de ativacao da conta enviado por email. Default eh False
 REGISTRATION_OPEN = False
 
 
 # Configuracoes de email
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' #Envia email real
-EMAIL_HOST = 'smtp.gmail.com' #default='localhost'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  #Envia email real
+EMAIL_HOST = 'smtp.gmail.com'  #default='localhost'
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587

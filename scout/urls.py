@@ -31,6 +31,7 @@ urlpatterns = patterns('',
                        # Institution
                        url(r'^institucional/',
                            include('institution.urls', namespace='institution', app_name='institution')),
+                       url(r'^eventos/', include('events.urls', namespace='events', app_name='events')),
 )
 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
