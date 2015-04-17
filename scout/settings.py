@@ -192,7 +192,7 @@ CKEDITOR_CONFIGS = {
         'filebrowserWindowWidth': 800,
         'filebrowserWindowHeight': 600,
         'filebrowserImageBrowseUrl': '/admin/filebrowser/browse?pop=3',
-        'filebrowserBrowseUrl': '/admin/filebrowser/browse?pop=3',
+        'filebrowserBrowseUrl': '/admin/filebrowser/browse?pop=3&dir=documentos',
         'toolbar': [
             ["StrikeThrough", "-", "Undo", "Redo", "-", "Cut", "Copy", "Paste", "PasteText", "PasteFromWord", "Find",
              "Replace", "-",
