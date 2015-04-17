@@ -1,4 +1,4 @@
-Campotec = {
+Events = {
     init: function () {
         this.pageScroll();
     },

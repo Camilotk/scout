@@ -12,7 +12,11 @@ from django.conf import settings
 from core.models import INACTIVE
 from core.admin import activate, inactivate
 from events.forms import EventForm
-from events.models import Event
+from events.models import Event, EventProgramation
+
+
+class EventProgramationInline(admin.TabularInline):
+    model = EventProgramation
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -22,6 +26,7 @@ class EventAdmin(admin.ModelAdmin):
     actions = ('duplicate_item',)
 
     form = EventForm
+    # inlines = [EventProgramationInline, ]
 
     def event_title_short(self, obj):
         """
@@ -52,4 +57,35 @@ class EventAdmin(admin.ModelAdmin):
     link_url_event_preview.short_description = _(u"Pré-visualização")
 
 
+class EventProgramationAdmin(admin.ModelAdmin):
+    list_display = ('name', 'date_time', 'active', 'description_short', 'image_thumb')
+    # list_display_links = ('name',)
+    search_fields = ('name', 'description')
+    ordering = ('date_time', 'name', 'active', 'description')
+    list_filter = (
+        ('active', admin.ChoicesFieldListFilter),
+        'event',
+    )
+    actions = [inactivate, activate, ]
+
+    def description_short(self, obj):
+        """
+        Corta o texto da Descrição para nao ficar exibir muito grande na listagem
+        """
+        text = strip_tags(obj.description)
+        if (len(text) > 80):
+            return "%s..." % text[0:80]
+        else:
+            return "%s" % text
+
+    def image_thumb(self, obj):
+        """
+        Exibe miniatura da imagem na listagem
+        """
+        return '<img src="%s%s" style="width:50px;">' % (settings.MEDIA_URL, obj.image)
+
+    image_thumb.allow_tags = True
+
+
 admin.site.register(Event, EventAdmin)
+admin.site.register(EventProgramation, EventProgramationAdmin)

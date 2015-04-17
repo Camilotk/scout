@@ -46,7 +46,7 @@ class EventHomepagePreview(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(EventHomepagePreview, self).get_context_data(**kwargs)
         context.update({
-            'event': get_object_or_404(Event, event_active=ACTIVE, event_url=self.event_url)
+            'event': get_object_or_404(Event, event_url=self.event_url)
         })
 
         return context

@@ -73,8 +73,8 @@ class Event(CoreModel):
     class Meta:
         ordering = ["event_active"]
         db_table = "event_homepage"
-        verbose_name = _(u"Página de Evento")
-        verbose_name_plural = _(u"Página de Eventos")
+        verbose_name = _(u"Evento")
+        verbose_name_plural = _(u"Eventos")
 
     def __unicode__(self):
         text = strip_tags(self.event_title)
@@ -83,6 +83,9 @@ class Event(CoreModel):
         else:
             text = "%s" % text
         return mark_safe(text)
+
+    def get_text(valor):
+        return mark_safe(strip_tags(valor))
 
     def get_absolute_url(self):
         """
@@ -143,3 +146,35 @@ class Event(CoreModel):
             return "%s/%s" % (settings.MEDIA_URL, self.event_image_background)
         else:
             return os.path.join(settings.STATIC_URL, 'campotec', 'img', 'header.jpg')
+
+    def get_programation_list(self):
+        """
+        Busca apenas as programacoes ATIVAS do evento
+        """
+        return self.eventprogramation_set.filter(active=ACTIVE)
+
+
+class EventProgramation(CoreModel):
+    """
+    Programação do Evento
+    """
+    EVENT_PROGRAMATION_IMAGE_PATH = os.path.join('eventos', 'programacao')
+
+    name = models.CharField(verbose_name=_(u"Nome"), max_length=100, null=False)
+    image = FileBrowseField(verbose_name=_(u"Imagem"), directory=EVENT_PROGRAMATION_IMAGE_PATH,
+                            max_length=200, blank=True, null=True,
+                            help_text=_(u"Para não distorcer, envie uma imagem com resolução máxima de 200x200px."))
+    date_time = models.DateTimeField(verbose_name=_(u"Data e Hora"))
+    active = models.CharField(verbose_name=_(u"Exibir"), max_length=1, choices=CHOICE_ACTIVE, default='S', blank=False)
+    description = RichTextField(verbose_name=_(u"Descrição"), max_length=1000, blank=True, config_name='description')
+    event = models.ForeignKey(verbose_name=_(u"Evento"), to=Event, null=True, blank=True,
+                              help_text=_(u"Selecione o Evento desta Programação."))
+
+    class Meta:
+        ordering = ["-name", "-description"]
+        db_table = "event_programation"
+        verbose_name = _(u"Programação")
+        verbose_name_plural = _(u"Programações")
+
+    def __unicode__(self):
+        return "%s - %s" % (self.name, self.date_time)

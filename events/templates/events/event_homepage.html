@@ -1,7 +1,7 @@
 {% extends 'core/core.html' %}
-{% load i18n bootstrap3 bootstrap_admin_template_tags %}
+{% load i18n bootstrap3 bootstrap_admin_template_tags core %}
 
-{% block bootstrap3_title %}{{ event.event_title }}{% endblock %}
+{% block bootstrap3_title %}{{ event.event_title|text }}{% endblock %}
 {% block bootstrap3_extra_head %}
     <meta name="author" content="Equipe Regional de Imagem e Comunicação">
     <meta name="description"
@@ -38,24 +38,25 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         {% block menu-itens %}
-                            <li><a class="navbar-brand hidden-xs"
-                                   href="{{ event.get_absolute_url }}">{{ event.event_title_menu }}</a></li>
-                            <li><a href="#home" title="Início" class="navegacao-link">Início</a></li>
+                            <li><a class="navbar-brand hidden-xs" href="{{ event.get_absolute_url }}"
+                                   title="{{ event.event_title_menu }}"
+                                   alt="{{ event.event_title_menu }}">{{ event.event_title_menu }}</a></li>
+                            <li><a href="#home" title="Início" class="navegacao-link">{% trans "Início" %}</a></li>
                             {% if event.is_information_active %}
-                                <li><a href="#infos-geral" title="{{ event.information_title|striptags|safe }}"
-                                       class="navegacao-link">{{ event.information_title|striptags|safe }}</a></li>
+                                <li><a href="#infos-geral" title="{{ event.information_title|text }}"
+                                       class="navegacao-link">{{ event.information_title|text }}</a></li>
                             {% endif %}
                             {% if event.is_list_programations_active %}
-                                <li><a href="#programacao" title="{{ event.list_programations_title|striptags }}"
-                                       class="navegacao-link">{{ event.list_programations_title|striptags }}</a></li>
+                                <li><a href="#programacao" title="{{ event.list_programations_title|text }}"
+                                       class="navegacao-link">{{ event.list_programations_title|text }}</a></li>
                             {% endif %}
                             {% if event.is_local_active %}
-                                <li><a href="#location" title="{{ event.local_title|striptags }}"
-                                       class="navegacao-link">{{ event.local_title|striptags }}</a></li>
+                                <li><a href="#location" title="{{ event.local_title|text }}"
+                                       class="navegacao-link">{{ event.local_title|text }}</a></li>
                             {% endif %}
                             {% if event.is_observation_active %}
-                                <li><a href="#inscricoes" title="{{ envent.observation_title|striptags }}"
-                                       class="navegacao-link">{{ event.observation_title|striptags }}</a></li>
+                                <li><a href="#observation" title="{{ event.observation_title|text }}"
+                                       class="navegacao-link">{{ event.observation_title|text }}</a></li>
                             {% endif %}
                         {% endblock %}
                     </ul>
@@ -68,16 +69,16 @@
         <header id="home" class="header"
                 style="background: url({{ event.get_event_image_background }}) center center no-repeat;">
             <div class="wrapper" style="display: block;">
-
-                <h1 class="logo"><a class="logo-link" href="#" title="{{ event.event_title }}" itemprop="name"
-                                    style="background: url({{ event.get_event_logo }}) no-repeat;">{{ event.event_title }}</a>
+                <h1 class="logo">
+                    <a class="logo-link" href="{{ event.get_absolute_url }}" title="{{ event.event_title }}"
+                       itemprop="name"
+                       style="background: url({{ event.get_event_logo }}) no-repeat;">{{ event.event_title }}</a>
                 </h1>
-
                 <p class="evento-head">{{ event.event_title|safe }}</p>
                 {% comment %}
-            <p class="evento-slogan">Inscrições encerradas!</p>
-            <p style="font-weight:bold; color:#FFF;">Confira a lista dos inscritos por base.</p>
-            <div style="width:100%; text-align:center;"><a href="relação-ramo-escoteiro.pdf" class="call-action-link" target="_blank">Ramo Escoteiro</a></div>
+                <p class="evento-slogan">Inscrições encerradas!</p>
+                <p style="font-weight:bold; color:#FFF;">Confira a lista dos inscritos por base.</p>
+                <div style="width:100%; text-align:center;"><a href="relação-ramo-escoteiro.pdf" class="call-action-link" target="_blank">Ramo Escoteiro</a></div>
             {% endcomment %}
                 <br>
             </div>
@@ -86,13 +87,13 @@
 
     {% block content-sections %}
 
-        {% if homepage.information_active %}
+        {% if event.is_information_active %}
             <section class="section section-about" id="infos-geral">
                 <div class="wrapper">
-                    <h2 class="section-title">{{ homepage.information_title|safe }}</h2>
+                    <h2 class="section-title">{{ event.information_title|safe }}</h2>
 
                     <div class="about-text" itemprop="description">
-                        {{ homepage.information_text|safe }}
+                        {{ event.information_text|safe }}
                     </div>
                 </div>
             </section>
@@ -109,12 +110,12 @@
         {% if event.is_list_programations_active %}
             <section class="section section-programacao" id="programacao">
                 <div class="wrapper">
-                    <h2 class="section-title">Programação</h2>
+                    <h2 class="section-title">{{ event.list_programations_title|safe }}</h2>
 
-                    {% if programation_list %}
+                    {% if event.get_programation_list %}
                         <ul class="programacao">
 
-                            {% regroup programation_list by date_time.date as date_list %}
+                            {% regroup event.get_programation_list by date_time.date as date_list %}
                             {# agrupa somente pela data do campo date_time #}
 
                             {% for date in date_list %}
@@ -147,27 +148,27 @@
             </section>
         {% endif %}
 
-        {% if homepage.is_local_active %}
+        {% if event.is_local_active %}
             <section class="section section-location" id="location">
                 <div class="wrapper">
-                    <h2 class="section-title">{{ homepage.local_title|safe }}</h2>
+                    <h2 class="section-title">{{ event.local_title|safe }}</h2>
 
                     <div class="address" itemprop="address" itemtype="http://schema.org/PostalAddress">
-                        {{ homepage.local_text|safe }}
+                        {{ event.local_text|safe }}
                     </div>
                 </div>
                 {% comment %}<div class="address-map" data-address="Avenida Senador Salgado Filho, 2785 - Viamão"></div>{% endcomment %}
-                <div class="address-map" data-address="{{ homepage.local_maps_name }}"></div>
+                <div class="address-map" data-address="{{ event.local_maps_name }}"></div>
             </section>
         {% endif %}
 
-        {% if homepage.is_observation_active %}
-            <section class="section section-inscricoes" id="inscricoes">
+        {% if event.is_observation_active %}
+            <section class="section section-inscricoes" id="observation">
                 <div class="wrapper">
-                    <h2 class="section-title">{{ homepage.observation_title|safe }}</h2>
+                    <h2 class="section-title">{{ event.observation_title|safe }}</h2>
 
                     <div class="about-text" itemprop="description">
-                        {{ homepage.observation_text|safe }}
+                        {{ event.observation_text|safe }}
                     </div>
                 </div>
             </section>
