@@ -13,7 +13,7 @@
     <meta property="og:url" content="http://{{ request.META.HTTP_HOST }}{{ event.get_absolute_url }}">
     <meta property="og:title" content="{{ event.event_title_menu }}">
     <meta property="og:description" content="{{ event.description_short }}">
-    <meta property="og:image" content="{{ event.event_social_image }}">
+    <meta property="og:image" content="http://{{ request.META.HTTP_HOST }}{{ event.event_social_image }}">
 
     <link href="http://fonts.googleapis.com/css?family=Raleway:100,200,400,600,800" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" media="all" href="/static/campotec/css/home.css">

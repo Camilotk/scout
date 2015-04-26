@@ -33,8 +33,8 @@ class EventAdmin(admin.ModelAdmin):
         Retorna o titulo sem tags html para a exibição na listagem
         """
         return obj.__unicode__()
-
     event_title_short.allow_tags = True
+    event_title_short.short_description = _(u"Título")
 
     def duplicate_item(self, request, queryset):
         if queryset.count() <> 1:
@@ -43,7 +43,6 @@ class EventAdmin(admin.ModelAdmin):
             obj = queryset.get()
             obj_new = obj.duplicate_save()
             return HttpResponseRedirect(redirect_to=reverse('admin:events_event_change', args=(obj_new.id,)))
-
     duplicate_item.short_description = _(u"Duplicar Item")
 
 
