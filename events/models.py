@@ -147,6 +147,15 @@ class Event(CoreModel):
         else:
             return os.path.join(settings.STATIC_URL, 'campotec', 'img', 'header.jpg')
 
+    def get_event_social_image(self):
+        """
+            retorna o caminho do logo do evento para montar a URL
+        """
+        if self.event_logo:
+            return "%s/%s" % (settings.MEDIA_URL, self.event_social_image)
+        else:
+            return ''
+
     def get_programation_list(self):
         """
         Busca apenas as programacoes ATIVAS do evento
