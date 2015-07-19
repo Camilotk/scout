@@ -160,7 +160,7 @@ class Event(CoreModel):
         """
         Busca apenas as programacoes ATIVAS do evento
         """
-        return self.eventprogramation_set.filter(active=ACTIVE)
+        return self.eventprogramation_set.filter(active=ACTIVE).order_by('date_time')
 
 
 class EventProgramation(CoreModel):
