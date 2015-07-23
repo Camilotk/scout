@@ -115,7 +115,7 @@
                     {% if event.get_programation_list %}
                         <ul class="programacao">
 
-                            {% regroup event.get_programation_list by date_time.date as date_list %}
+                            {% regroup event.get_programation_list by date_time|date:'Y-m-d' as date_list %}
                             {# agrupa somente pela data do campo date_time #}
 
                             {% for date in date_list %}
