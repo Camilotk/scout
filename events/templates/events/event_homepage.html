@@ -130,7 +130,12 @@
                                         </div>
                                         <div class="programacao-slot">
                                             <div class="programacao-activity">{{ programation.name }}</div>
-                                            <p>{{ programation.description|safe }}&nbsp;</p></div>
+                                            {% if programation.description %}
+                                                <p>{{ programation.description|safe }}</p>
+                                            {% else %}
+                                                <p>&nbsp;</p>
+                                            {% endif %}
+                                            </div>
                                     </li>
                                 {% endfor %}
                             {% endfor %}
