@@ -70,7 +70,7 @@
                 style="background: url({{ event.get_event_image_background }}) center center no-repeat;">
             <div class="wrapper" style="display: block;">
                 <h1 class="logo">
-                    <a class="logo-link" href="{{ event.get_absolute_url }}" title="{{ event.event_title|striptags }}"
+                    <a class="logo-link" href="{{ event.get_absolute_url }}" title="{{ event.event_title|safe|striptags }}"
                        itemprop="name"
                        style="background: url({{ event.get_event_logo }}) no-repeat;">{{ event.event_title }}</a>
                 </h1>
